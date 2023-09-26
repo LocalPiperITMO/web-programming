@@ -1,0 +1,143 @@
+.carcass {
+    position: absolute;
+    top: 50%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+    padding: 30px;
+    background-color: grey;
+    height: 320px;
+    width: 500px;
+}
+.responses {
+    position: absolute;
+    top: 50%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+    padding: 30px;
+    background-color: grey;
+    height: 320px;
+    width: 450px;
+}
+
+.header-table {
+    padding-bottom: 10px;
+}
+
+.header-table td {
+    text-align: center;
+    vertical-align: middle;
+    color: aqua;
+    background-color: black;
+}
+
+#group-name {
+    width: 100px;
+}
+
+#author {
+    width: 300px;
+}
+
+#variant {
+    width: 100px;
+}
+
+.content-table td {
+    text-align: center;
+    color: greenyellow;
+    background-color: black;
+}
+
+#X {
+    width: 150px;
+    height: 100px;
+}
+
+#Y {
+    width: 150px;
+    height: 100px;
+}
+
+#canvas-shell {
+    width: 200px;
+    height: 200px;
+}
+#graph {
+    margin: 1px;
+    width: 200px;
+    height:200px;
+    z-index: 1;
+}
+#check {
+    height: 80px;
+}
+#x-table {
+    margin: 10px;
+    position: absolute;
+    top: 60px;
+}
+#y-table {
+    margin-left: 15px;
+    margin-top: 10px;
+    position: absolute;
+    top: 60px;
+}
+#y-input {
+    width: 100px;
+}
+#y-input:hover + #popup {
+    display: block;
+}
+.popup {
+    display: none;
+    position: absolute;
+    z-index: 1;
+}
+.r-table {
+    margin: 10px;
+    position: absolute;
+    top: 190px;
+    left: 80px;
+}
+#r-input {
+    margin: 10px;
+}
+#check button {
+    color: red;
+    background-color: black;
+}
+#clear button {
+    color: red;
+    background-color: black;
+}
+#x-error, #y-error, #r-error {
+    color: red;
+    display: none;
+}
+#result {
+    display: none;
+}
+.responses {
+    max-height: 300px;
+    overflow-y: auto;
+}
+#hit-table thead td {
+    text-align: center;
+    vertical-align: middle;
+    color: aqua;
+    background-color: black;
+}
+#hit-table tbody td {
+    text-align: center;
+    vertical-align: middle;
+    color: greenyellow;
+    background-color: black;
+}
+body {
+    background-color: black;
+}
+
+
+
+
+

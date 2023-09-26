@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Дизайна нетъ</title>
+    <style>
+        .carcass {
+            position: absolute;
+            top: 50%;
+            left: 25%;
+            transform: translate(-50%, -50%);
+            padding: 30px;
+            background-color: grey;
+            height: 320px;
+            width: 500px;
+        }
+        .responses {
+            position: absolute;
+            top: 50%;
+            left: 75%;
+            transform: translate(-50%, -50%);
+            padding: 30px;
+            background-color: grey;
+            height: 320px;
+            width: 450px;
+        }
+
+        .header-table {
+            padding-bottom: 10px;
+        }
+
+        .header-table td {
+            text-align: center;
+            vertical-align: middle;
+            color: aqua;
+            background-color: black;
+        }
+
+        #group-name {
+            width: 100px;
+        }
+
+        #author {
+            width: 300px;
+        }
+
+        #variant {
+            width: 100px;
+        }
+
+        .content-table td {
+            text-align: center;
+            color: greenyellow;
+            background-color: black;
+        }
+
+        #X {
+            width: 150px;
+            height: 100px;
+        }
+
+        #Y {
+            width: 150px;
+            height: 100px;
+        }
+
+        #canvas-shell {
+            width: 200px;
+            height: 200px;
+        }
+        #graph {
+            margin: 1px;
+            width: 200px;
+            height:200px;
+            z-index: 1;
+        }
+        #check {
+            height: 80px;
+        }
+        #x-table {
+            margin: 10px;
+            position: absolute;
+            top: 60px;
+        }
+        #y-table {
+            margin-left: 15px;
+            margin-top: 10px;
+            position: absolute;
+            top: 60px;
+        }
+        #y-input {
+            width: 100px;
+        }
+        #y-input:hover + #popup {
+            display: block;
+        }
+        .popup {
+            display: none;
+            position: absolute;
+            z-index: 1;
+        }
+        .r-table {
+            margin: 10px;
+            position: absolute;
+            top: 190px;
+            left: 80px;
+        }
+        #r-input {
+            margin: 10px;
+        }
+        #check button {
+            color: red;
+            background-color: black;
+        }
+        #clear button {
+            color: red;
+            background-color: black;
+        }
+        #x-error, #y-error, #r-error {
+            color: red;
+            display: none;
+        }
+        #result {
+            display: none;
+        }
+        .responses {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        #hit-table thead td {
+            text-align: center;
+            vertical-align: middle;
+            color: aqua;
+            background-color: black;
+        }
+        #hit-table tbody td {
+            text-align: center;
+            vertical-align: middle;
+            color: greenyellow;
+            background-color: black;
+        }
+        body {
+            background-color: black;
+        }
+    </style>
+    <link rel="icon" href="https://sun9-82.userapi.com/cm5KkCtIA3o0lGNY69gvLC5Vma1pVAbFvygwQg/swYvHCstcII.jpg">
+    <script src="js/data-sender.js" defer></script>
+    <script src="js/validation.js" defer></script>
+    <script src="js/table-builder.js" defer></script>
+</head>
+<body>
+<table id="root-table">
+    <tr>
+        <td>
+            <div class="carcass">
+                <table class="header-table">
+                    <tr>
+                        <td id="group-name">P3206</td>
+                        <td id="author">Сорокин Артём Николаевич</td>
+                        <td id="variant">1626</td>
+                    </tr>
+                </table>
+                <table class="content-table">
+                    <tr>
+                        <td id="X">
+                            <table id="x-table">
+                                <tr>
+                                    <td colspan="6">
+                                        Выберите X:
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input id="X-checkbox-1" class="box" type="checkbox" value="-5">
+                                    </td>
+                                    <td>
+                                        <label for="X-checkbox-1">-5</label>
+                                    </td>
+                                    <td>
+                                        <input id="X-checkbox-2" class="box" type="checkbox" value="-4">
+                                    </td>
+                                    <td>
+                                        <label for="X-checkbox-2">-4</label>
+                                    </td>
+                                    <td>
+                                        <input id="X-checkbox-3" class="box" type="checkbox" value="-3">
+                                    </td>
+                                    <td>
+                                        <label for="X-checkbox-3">-3</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input id="X-checkbox-4" class="box" type="checkbox" value="-2">
+                                    </td>
+                                    <td>
+                                        <label for="X-checkbox-4">-2</label>
+                                    </td>
+                                    <td>
+                                        <input id="X-checkbox-5" class="box" type="checkbox" value="-1">
+                                    </td>
+                                    <td>
+                                        <label for="X-checkbox-5">-1</label>
+                                    </td>
+                                    <td>
+                                        <input id="X-checkbox-6" class="box" type="checkbox" value="0">
+                                    </td>
+                                    <td>
+                                        <label for="X-checkbox-6">0</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input id="X-checkbox-7" class="box" type="checkbox" value="1">
+                                    </td>
+                                    <td>
+                                        <label for="X-checkbox-7">1</label>
+                                    </td>
+                                    <td>
+                                        <input id="X-checkbox-8" class="box" type="checkbox" value="2">
+                                    </td>
+                                    <td>
+                                        <label for="X-checkbox-8">2</label>
+                                    </td>
+                                    <td>
+                                        <input id="X-checkbox-9" class="box" type="checkbox" value="3">
+                                    </td>
+                                    <td>
+                                        <label for="X-checkbox-9">3</label>
+                                    </td>
+                                </tr>
+                            </table>
+                            <script src="js/checkbox.js"></script>
+                        </td>
+                        <td id="Y">
+                            <table id="y-table">
+                                <tr>
+                                    <td>
+                                        <label for="y-input">Введите Y:</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input id="y-input" type="text" maxlength="10">
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="popup" id="popup">
+                                Y должен быть от -3<br>
+                                до 5 включительно
+                            </div>
+                            <script src="js/popup.js"></script>
+                        </td>
+                        <td rowspan="2" id="canvas-shell">
+                            <div></div>
+                            <img id="graph" src="graph.png" alt="graph">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <table class="r-table">
+                                <tr>
+                                    <td>
+                                        <label for="r-input">
+                                            Выберите R:
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <select id="r-input">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="clear">
+                            <button type="button" onclick="clearTable()">Очистить таблицу</button>
+                        </td>
+                        <td id="check">
+                            <button type="button" onclick="getData()">Проверить</button>
+                        </td>
+                        <td>
+                            <div id="x-error">X не корректный!</div>
+                            <div id="y-error">Y не корректный!</div>
+                            <div id="r-error">R не корректный!</div>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </td>
+        <td>
+            <div class="responses">
+                <table id="hit-table">
+                    <thead>
+                    <tr>
+                        <td>X</td>
+                        <td>Y</td>
+                        <td>R</td>
+                        <td>Попадание/Промах</td>
+                        <td>Текущее время</td>
+                        <td>Время работы скрипта</td>
+                    </tr>
+                    </thead>
+                    <tbody id="outputs">
+
+                    </tbody>
+                </table>
+            </div>
+        </td>
+    </tr>
+
+</table>
+
+
+</body>
+</html>
