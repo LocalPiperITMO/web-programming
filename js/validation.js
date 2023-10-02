@@ -32,7 +32,7 @@ function validate(x, y, r) {
     } else {
         document.getElementById("x-error").style.display = "none";
     }
-    if (isNaN(y) || y < -3 || y > 5) {
+    if (isNaN(y) || -3 >= y || 5 <= y) {
         document.getElementById("y-error").style.display = "block";
         result = false;
     } else {
