@@ -4,7 +4,7 @@ function validateData($x, $y, $r): bool
     if (
         is_numeric($x) && is_numeric($y) && is_numeric($r) &&
         in_array($x, [-5, -4, -3, -2, -1, 0, 1, 2, 3]) &&
-        $y >= -3 && $y <= 5 && in_array($r, [1, 2, 3, 4, 5])
+        $y > -3 && $y < 5 && in_array($r, [1, 2, 3, 4, 5])
     ) {
         return true;
     }
