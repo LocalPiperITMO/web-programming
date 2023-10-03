@@ -1,15 +1,19 @@
 <?php
 
-class RequestHandler {
-    public static function processRequest(array $data)
+class RequestHandler
+{
+    public static function processRequest(string $input)
     {
         $start_time = microtime(true);
-        if (isset($data['X']) && isset($data['Y']) && isset($data['R'])) {
-            $x = $data['X'];
-            $y = $data['Y'];
-            $r = $data['R'];
 
-            if (self::validateData($x, $y, $r)) {
+        preg_match('/"X"\s*:\s*([0-9.-]+),\s*"Y"\s*:\s*([0-9.-]+),\s*"R"\s*:\s*([0-9.-]+)/', $input, $matches);
+
+        if (isset($matches[1]) && isset($matches[2]) && isset($matches[3])) {
+            $x = floatval($matches[1]);
+            $y = self::buildY($matches[2]);
+            $r = floatval($matches[3]);
+
+            if ((new RequestHandler)->validateData($x, $y, $r)) {
                 self::echoResponse(200, self::buildResponse($x, $y, $r, $start_time));
             } else {
                 self::echoResponse(400, "Provided data is not valid");
@@ -18,6 +22,13 @@ class RequestHandler {
         } else {
             self::echoResponse(400, "Not all data is set");
         }
+    }
+
+    public static function buildY($rawY): string
+    {
+        list($whole, $fraction) = explode(".", $rawY);
+        $trimmedFraction = substr($fraction, 0, 8);
+        return $whole . "." . $trimmedFraction;
     }
 
     public static function validateData($x, $y, $r): bool
@@ -69,9 +80,8 @@ class RequestHandler {
 
 date_default_timezone_set('Europe/Moscow');
 $jsonInput = file_get_contents('php://input');
-$data = json_decode($jsonInput, true);
-if (!empty($data)) {
-    RequestHandler::processRequest($data);
+if (!empty($jsonInput)) {
+    RequestHandler::processRequest($jsonInput);
 } else {
     RequestHandler::echoResponse(400, "Empty request");
 }
