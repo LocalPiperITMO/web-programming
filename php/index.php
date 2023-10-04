@@ -1,7 +1,18 @@
 <?php
 
+class ErrorArray
+{
+    public static $error_array = array(
+        'ERR_EMPTY_REQUEST' => array(400, "Incoming request was empty"),
+        'ERR_DATA_NOT_SET' => array(400, "Data is not set"),
+        'ERR_DATA_INVALID' => array(400, "Data is not valid"),
+        'ERR_DATA_OUT_OF_SCOPE' => array(400, "Data is out of range")
+    );
+}
+
 class RequestHandler
 {
+
     public static function processRequest(string $input)
     {
         $start_time = microtime(true);
@@ -16,11 +27,11 @@ class RequestHandler
             if ((new RequestHandler)->validateData($x, $y, $r)) {
                 self::echoResponse(200, self::buildResponse($x, $y, $r, $start_time));
             } else {
-                self::echoResponse(400, "Provided data is not valid");
+                self::echoResponse(ErrorArray::$error_array['ERR_DATA_INVALID'][0], ErrorArray::$error_array['ERR_DATA_INVALID'][1]);
             }
 
         } else {
-            self::echoResponse(400, "Not all data is set");
+            self::echoResponse(ErrorArray::$error_array['ERR_DATA_NOT_SET'][0], ErrorArray::$error_array['ERR_DATA_NOT_SET'][1]);
         }
     }
 
@@ -83,7 +94,7 @@ $jsonInput = file_get_contents('php://input');
 if (!empty($jsonInput)) {
     RequestHandler::processRequest($jsonInput);
 } else {
-    RequestHandler::echoResponse(400, "Empty request");
+    RequestHandler::echoResponse(ErrorArray::$error_array['ERR_EMPTY_REQUEST'][0], ErrorArray::$error_array['ERR_EMPTY_REQUEST'][1]);
 }
 die;
 ?>
