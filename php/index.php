@@ -23,7 +23,7 @@ class DataUtils
 
     public static function checkHit(int $x, float $y, int $r): string
     {
-        $sector1 = $x >= 0 && $y >= 0 && ($x) ^ 2 + ($y) ^ 2 <= ($r) ^ 2;
+        $sector1 = $x >= 0 && $y >= 0 && ($x) ** 2 + ($y) ** 2 <= ($r) ** 2;
         $sector3 = $x <= 0 && $y <= 0 && abs($x) <= $r && abs($y) <= $r;
         $sector4 = $x >= 0 && $y <= 0 && $y >= ($x - $r / 2);
         if ($sector1 || $sector3 || $sector4) {
