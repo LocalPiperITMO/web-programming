@@ -1,11 +1,4 @@
-function Canvas() {
-  return (
-    <>
-      <h2>Graph</h2>
-      <canvas id="canvas" width={300} height={300}></canvas>
-    </>
-  );
-}
+import { Canvas } from "./Canvas";
 
 function TextInput({ data }) {
   return (
