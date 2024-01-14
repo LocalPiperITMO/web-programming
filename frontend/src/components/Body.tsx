@@ -44,10 +44,8 @@ function InputField({ label, type, data }) {
   if (type === "checkbox") {
     return (
       <div className="container text-center">
-        <div className="col-2">
-          <p>{label}</p>
-        </div>
-        <div className="col-8">
+        <div className="col">{label}</div>
+        <div className="col">
           <CheckboxInput data={data} />
         </div>
       </div>
@@ -55,8 +53,8 @@ function InputField({ label, type, data }) {
   } else if (type === "text") {
     return (
       <div className="container text-center">
-        <div className="col-2">{label}</div>
-        <div className="col-8">
+        <div className="col">{label}</div>
+        <div className="col">
           <TextInput data={data} />
         </div>
       </div>
@@ -127,7 +125,7 @@ function ResultTableContainer() {
   return (
     <>
       <h2>Result</h2>
-      <table className="table result-table-container">
+      <table className="table">
         <thead>
           <tr>
             <th scope="col">X</th>
@@ -137,7 +135,7 @@ function ResultTableContainer() {
             <th scope="col">Time</th>
           </tr>
         </thead>
-        <tbody className="table-group-divider"></tbody>
+        <tbody className="table-group-divider result-table-container"></tbody>
       </table>
     </>
   );
