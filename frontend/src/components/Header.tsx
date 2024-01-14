@@ -1,4 +1,4 @@
-const data = ["P3206", "Sorokin Artem", "Variant: 1946"];
+const data = ["Group: P3206", "Author: Sorokin Artem", "Variant: 1946"];
 export function HeaderContainer() {
   return (
     <div className="container text-center">

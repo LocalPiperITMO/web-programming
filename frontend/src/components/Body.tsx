@@ -1,8 +1,10 @@
 function Canvas() {
-  return <>
-  <h2>Graph</h2>
-  <canvas id="canvas" width={300} height={300}></canvas>
-  </>
+  return (
+    <>
+      <h2>Graph</h2>
+      <canvas id="canvas" width={300} height={300}></canvas>
+    </>
+  );
 }
 
 function TextInput({ data }) {
@@ -84,47 +86,46 @@ function InputContainer() {
   ];
   return (
     <>
-    <h2>Input</h2>
-    <ul className="list-group">
-      {inputs.map((input) => (
-        <InputField
-          label={input.label}
-          type={input.type}
-          data={input.data}
-        ></InputField>
-      ))}
-    </ul>
+      <h2>Input</h2>
+      <ul className="list-group">
+        {inputs.map((input) => (
+          <InputField
+            label={input.label}
+            type={input.type}
+            data={input.data}
+          ></InputField>
+        ))}
+      </ul>
     </>
-    
   );
 }
 
 function ButtonContainer() {
   return (
     <>
-    <h2>Menu</h2>
-    <div
-      className="btn-group-vertical"
-      role="group"
-      aria-label="Vertical button group"
-    >
-      <button type="button" className="btn btn-primary">
-        Submit
-      </button>
-      <button type="button" className="btn btn-primary">
-        Clear table
-      </button>
-      <button type="button" className="btn btn-primary">
-        Back To Main Page
-      </button>
-    </div>
+      <h2>Menu</h2>
+      <div
+        className="btn-group-vertical"
+        role="group"
+        aria-label="Vertical button group"
+      >
+        <button type="button" className="btn btn-primary">
+          Submit
+        </button>
+        <button type="button" className="btn btn-primary">
+          Clear table
+        </button>
+        <button type="button" className="btn btn-primary">
+          Back To Main Page
+        </button>
+      </div>
     </>
   );
 }
 export function BodyContainer() {
   return (
     <div className="container text-center">
-        <h1>Web Lab 4</h1>
+      <h1>Web Lab 4</h1>
       <div className="row row-cols-2">
         <div className="col">
           <Canvas />

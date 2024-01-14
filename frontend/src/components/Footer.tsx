@@ -1,4 +1,4 @@
-const data = ["Git: https://github.com/LocalPiper", "Telegram: @crimson_sun_is_rising"];
+const data = ["Git: https://github.com/LocalPiper", "Telegram: @crimson_sun_is_rising", "E-mail: artsor53@gmail.com"];
 export function FooterContainer() {
   return (
     <div className="container text-center">
