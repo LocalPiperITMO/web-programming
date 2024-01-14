@@ -3,3 +3,8 @@
     height: 100px;
     overflow-y: scroll;
   }
+
+.result-table-container {
+    height: 300px;
+    overflow-y: scroll;
+}

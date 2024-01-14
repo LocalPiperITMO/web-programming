@@ -122,6 +122,26 @@ function ButtonContainer() {
     </>
   );
 }
+
+function ResultTableContainer() {
+  return (
+    <>
+      <h2>Result</h2>
+      <table className="table result-table-container">
+        <thead>
+          <tr>
+            <th scope="col">X</th>
+            <th scope="col">Y</th>
+            <th scope="col">R</th>
+            <th scope="col">Result</th>
+            <th scope="col">Time</th>
+          </tr>
+        </thead>
+        <tbody className="table-group-divider"></tbody>
+      </table>
+    </>
+  );
+}
 export function BodyContainer() {
   return (
     <div className="container text-center">
@@ -136,7 +156,9 @@ export function BodyContainer() {
         <div className="col">
           <ButtonContainer />
         </div>
-        <div className="col">TODO: add result table</div>
+        <div className="col">
+          <ResultTableContainer />
+        </div>
       </div>
     </div>
   );
