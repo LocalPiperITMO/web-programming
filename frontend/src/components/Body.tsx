@@ -1,4 +1,5 @@
 import { Canvas } from "./Canvas";
+import { useNavigate } from "react-router-dom";
 
 function TextInput({ data }) {
   return (
@@ -92,6 +93,12 @@ function InputContainer() {
 }
 
 function ButtonContainer() {
+  const navigate = useNavigate();
+
+  function handleClick(_event: any) {
+    navigate("../");
+  }
+
   return (
     <>
       <h2>Menu</h2>
@@ -106,7 +113,11 @@ function ButtonContainer() {
         <button type="button" className="btn btn-primary">
           Clear table
         </button>
-        <button type="button" className="btn btn-primary">
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={handleClick}
+        >
           Back To Main Page
         </button>
       </div>

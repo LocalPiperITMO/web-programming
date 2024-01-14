@@ -1,24 +1,14 @@
-import { HeaderContainer } from "./components/Header";
-import { BodyContainer } from "./components/Body";
-import { FooterContainer } from "./components/Footer";
-function Header() {
-  return <HeaderContainer></HeaderContainer>;
-}
-
-function Body() {
-  return <BodyContainer></BodyContainer>;
-}
-
-function Footer() {
-  return <FooterContainer></FooterContainer>;
-}
+import { Route, Routes } from "react-router-dom";
+import Home from "./Home";
+import Main from "./Index";
 
 function App() {
   return (
-    <div className="container-fluid">
-      <Header></Header>
-      <Body></Body>
-      <Footer></Footer>
+    <div className="App">
+      <Routes>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/main" element={<Main />}></Route>
+      </Routes>
     </div>
   );
 }
