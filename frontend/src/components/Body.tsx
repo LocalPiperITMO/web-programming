@@ -92,6 +92,25 @@ function InputContainer() {
   );
 }
 
+function ButtonContainer() {
+  return (
+    <div
+      className="btn-group-vertical"
+      role="group"
+      aria-label="Vertical button group"
+    >
+      <button type="button" className="btn btn-primary">
+        Submit
+      </button>
+      <button type="button" className="btn btn-primary">
+        Clear table
+      </button>
+      <button type="button" className="btn btn-primary">
+        Back To Main Page
+      </button>
+    </div>
+  );
+}
 export function BodyContainer() {
   return (
     <div className="container text-center">
@@ -102,7 +121,9 @@ export function BodyContainer() {
         <div className="col">
           <InputContainer />
         </div>
-        <div className="col">TODO: add buttons</div>
+        <div className="col">
+          <ButtonContainer />
+        </div>
         <div className="col">TODO: add result table</div>
       </div>
     </div>
