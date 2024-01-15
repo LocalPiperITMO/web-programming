@@ -42,15 +42,17 @@ function RInput({ r, sr, data }) {
   return (
     <>
       <div className="container text-center value-checkbox-container">
-        {data.map((item: string) => (
+        {data.map((item: string, index) => (
           <div className="col">
             <div className="form-check">
               <input
+                key={index}
                 className="form-check-input"
                 type="checkbox"
                 value={item}
                 id={"rCheck" + item}
                 onClick={sr}
+                disabled={parseInt(item) <= 0}
               />
               <label className="form-check-label" htmlFor={"rCheck" + item}>
                 {item}
@@ -209,7 +211,11 @@ export function BodyContainer() {
   };
 
   const handleRClick = (e) => {
-    setR(e.target.value);
+    if (r.length !== 0) {
+      setR("");
+    } else {
+      setR(e.target.value);
+    }
   };
   const handleClear = async () => {
     const requestOptions = {
