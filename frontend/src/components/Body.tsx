@@ -1,3 +1,4 @@
+import { getData } from "../ts/send";
 import { Canvas } from "./Canvas";
 import { useNavigate } from "react-router-dom";
 
@@ -107,17 +108,13 @@ function ButtonContainer() {
         role="group"
         aria-label="Vertical button group"
       >
-        <button type="button" className="btn btn-primary">
+        <button type="button" className="btn btn-primary" onClick={getData}>
           Submit
         </button>
         <button type="button" className="btn btn-primary">
           Clear table
         </button>
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={handleClick}
-        >
+        <button type="button" className="btn btn-primary" onClick={handleClick}>
           Back To Main Page
         </button>
       </div>
