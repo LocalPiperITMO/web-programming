@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.example.backend.entity.Result;
 import com.example.backend.entity.ResultRepository;
+import com.example.backend.entity.Shot;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,6 +35,12 @@ public class HomeController {
     @PostMapping("/process")
     void manual(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String requestData = request.getReader().lines().collect(Collectors.joining());
+
+        DataPreprocessor preprocessor = new DataPreprocessor();
+        Shot shot = preprocessor.preprocess(requestData);
+        if (shot != null) {
+            repository.save(new Result(shot.getX(), shot.getY(), shot.getR(), shot.isHit(), shot.getOwner()));
+        }
         response.setStatus(200);
 
         response.getWriter().println(repository.findAll());

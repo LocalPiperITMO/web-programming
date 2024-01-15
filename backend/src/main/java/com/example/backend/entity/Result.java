@@ -18,10 +18,18 @@ public class Result {
 
     private double x;
     private double y;
-    private int r;
+    private long r;
 
     private boolean isHit;
     private String owner;
+
+    public Result(double x, double y, long r, boolean isHit, String own) {
+        this.x = x;
+        this.y = y;
+        this.r = r;
+        this.isHit = isHit;
+        this.owner = own;
+    }
 
     @Override
     public String toString() {
