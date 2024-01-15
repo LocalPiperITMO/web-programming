@@ -1,18 +1,20 @@
-import { getData } from "../ts/send";
+import { sendData } from "../ts/send";
+import { useState } from "react";
 import { Canvas } from "./Canvas";
 import { useNavigate } from "react-router-dom";
 
-function TextInput({ data }) {
+function YInput({ y, sy, data }) {
   return (
     <input
       className="form-control"
       type="text"
       placeholder={data[0] + "..." + data[1]}
+      onChange={sy}
     />
   );
 }
 
-function CheckboxInput({ data }) {
+function XInput({ x, sx, data }) {
   return (
     <>
       <div className="container text-center value-checkbox-container">
@@ -23,9 +25,10 @@ function CheckboxInput({ data }) {
                 className="form-check-input"
                 type="checkbox"
                 value={item}
-                id={"flexCheck" + item}
+                id={"xCheck" + item}
+                onClick={sx}
               />
-              <label className="form-check-label" htmlFor={"flexCheck" + item}>
+              <label className="form-check-label" htmlFor={"xCheck" + item}>
                 {item}
               </label>
             </div>
@@ -35,31 +38,33 @@ function CheckboxInput({ data }) {
     </>
   );
 }
-function InputField({ label, type, data }) {
-  if (type === "checkbox") {
-    return (
-      <div className="container text-center">
-        <div className="col">{label}</div>
-        <div className="col">
-          <CheckboxInput data={data} />
-        </div>
-      </div>
-    );
-  } else if (type === "text") {
-    return (
-      <div className="container text-center">
-        <div className="col">{label}</div>
-        <div className="col">
-          <TextInput data={data} />
-        </div>
-      </div>
-    );
-  }
 
-  return <>An error has occurred!</>;
+function RInput({ r, sr, data }) {
+  return (
+    <>
+      <div className="container text-center value-checkbox-container">
+        {data.map((item: string) => (
+          <div className="col">
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value={item}
+                id={"rCheck" + item}
+                onClick={sr}
+              />
+              <label className="form-check-label" htmlFor={"rCheck" + item}>
+                {item}
+              </label>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
 }
 
-function InputContainer() {
+function InputContainer({ x, sx, y, sy, r, sr }) {
   const inputs = [
     {
       label: "X",
@@ -79,21 +84,38 @@ function InputContainer() {
   ];
   return (
     <>
-      <h2>Input</h2>
-      <ul className="list-group">
-        {inputs.map((input) => (
-          <InputField
-            label={input.label}
-            type={input.type}
-            data={input.data}
-          ></InputField>
-        ))}
-      </ul>
+      <div className="container text-center">
+        <h2>Inputs</h2>
+        <div className="row">
+          <div className="col">
+            <h3>X</h3>
+          </div>
+          <div className="col">
+            <XInput x={x} sx={sx} data={inputs[0].data} />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <h3>Y</h3>
+          </div>
+          <div className="col">
+            <YInput y={y} sy={sy} data={inputs[1].data} />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <h3>R</h3>
+          </div>
+          <div className="col">
+            <RInput r={r} sr={sr} data={inputs[2].data} />
+          </div>
+        </div>
+      </div>
     </>
   );
 }
 
-function ButtonContainer() {
+function ButtonContainer({ x, y, r }) {
   const navigate = useNavigate();
 
   function handleClick(_event: any) {
@@ -108,7 +130,11 @@ function ButtonContainer() {
         role="group"
         aria-label="Vertical button group"
       >
-        <button type="button" className="btn btn-primary" onClick={getData}>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() => sendData(x, y, r)}
+        >
           Submit
         </button>
         <button type="button" className="btn btn-primary">
@@ -142,6 +168,22 @@ function ResultTableContainer() {
   );
 }
 export function BodyContainer() {
+  const [x, setX] = useState("");
+  const [y, setY] = useState("");
+  const [r, setR] = useState("");
+
+  const handleXClick = (e) => {
+    setX(e.target.value);
+  };
+
+  const handleYClick = (e) => {
+    setY(e.target.value);
+  };
+
+  const handleRClick = (e) => {
+    setR(e.target.value);
+  };
+
   return (
     <div className="container text-center">
       <h1>Web Lab 4</h1>
@@ -150,10 +192,17 @@ export function BodyContainer() {
           <Canvas />
         </div>
         <div className="col">
-          <InputContainer />
+          <InputContainer
+            x={x}
+            sx={handleXClick}
+            y={y}
+            sy={handleYClick}
+            r={r}
+            sr={handleRClick}
+          />
         </div>
         <div className="col">
-          <ButtonContainer />
+          <ButtonContainer x={x} y={y} r={r} />
         </div>
         <div className="col">
           <ResultTableContainer />
