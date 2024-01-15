@@ -33,7 +33,7 @@ public class HomeController {
     }
 
     @PostMapping("/process")
-    void manual(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    void process(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String requestData = request.getReader().lines().collect(Collectors.joining());
 
         DataPreprocessor preprocessor = new DataPreprocessor();
@@ -45,4 +45,12 @@ public class HomeController {
 
         response.getWriter().println(repository.findAll());
     }
+
+    @PostMapping("/clear")
+    void clear(HttpServletResponse response) throws IOException{
+        repository.deleteAll();
+        response.setStatus(200);
+        response.getWriter().println("Cleared data");
+    }
+
 }

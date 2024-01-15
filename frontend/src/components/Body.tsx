@@ -1,4 +1,3 @@
-import { sendData } from "../ts/send";
 import { useState } from "react";
 import { Canvas } from "./Canvas";
 import { useNavigate } from "react-router-dom";
@@ -115,7 +114,7 @@ function InputContainer({ x, sx, y, sy, r, sr }) {
   );
 }
 
-function ButtonContainer({ x, y, r, act }) {
+function ButtonContainer({ x, y, r, act, clear }) {
   const navigate = useNavigate();
 
   function handleClick(_event: any) {
@@ -133,7 +132,7 @@ function ButtonContainer({ x, y, r, act }) {
         <button type="button" className="btn btn-primary" onClick={act}>
           Submit
         </button>
-        <button type="button" className="btn btn-primary">
+        <button type="button" className="btn btn-primary" onClick={clear}>
           Clear table
         </button>
         <button type="button" className="btn btn-primary" onClick={handleClick}>
@@ -145,6 +144,36 @@ function ButtonContainer({ x, y, r, act }) {
 }
 
 function ResultTableContainer({ data }) {
+  if (data !== "[]") {
+    return (
+      <>
+        <h2>Result</h2>
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">X</th>
+              <th scope="col">Y</th>
+              <th scope="col">R</th>
+              <th scope="col">Result</th>
+            </tr>
+          </thead>
+          <tbody
+            id="result-table"
+            className="table-group-divider result-table-container"
+          >
+            {JSON.parse(data).map((item) => (
+              <tr>
+                <td scope="col">{item.x}</td>
+                <td scope="col">{item.y}</td>
+                <td scope="col">{item.r}</td>
+                <td scope="col">{item.isHit}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </>
+    );
+  }
   return (
     <>
       <h2>Result</h2>
@@ -157,16 +186,10 @@ function ResultTableContainer({ data }) {
             <th scope="col">Result</th>
           </tr>
         </thead>
-        <tbody className="table-group-divider result-table-container">
-          {JSON.parse(data).map((item) => (
-            <tr>
-              <td scope="col">{item.x}</td>
-              <td scope="col">{item.y}</td>
-              <td scope="col">{item.r}</td>
-              <td scope="col">{item.isHit}</td>
-            </tr>
-          ))}
-        </tbody>
+        <tbody
+          id="result-table"
+          className="table-group-divider result-table-container"
+        ></tbody>
       </table>
     </>
   );
@@ -187,6 +210,18 @@ export function BodyContainer() {
 
   const handleRClick = (e) => {
     setR(e.target.value);
+  };
+  const handleClear = async () => {
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    };
+    fetch("http://localhost:8080/clear", requestOptions);
+
+    setOut("[]");
   };
 
   const handleSubmit = async () => {
@@ -227,7 +262,13 @@ export function BodyContainer() {
           />
         </div>
         <div className="col">
-          <ButtonContainer x={x} y={y} r={r} act={handleSubmit} />
+          <ButtonContainer
+            x={x}
+            y={y}
+            r={r}
+            act={handleSubmit}
+            clear={handleClear}
+          />
         </div>
         <div className="col">
           <ResultTableContainer data={out} />
