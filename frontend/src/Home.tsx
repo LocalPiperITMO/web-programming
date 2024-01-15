@@ -1,12 +1,26 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Header } from "./Index";
 import { Footer } from "./Index";
+import { useState, useEffect } from "react";
 
 function Clock() {
+  let [date, setDate] = useState(new Date());
+
+  useEffect(() => {
+    let timer = setInterval(() => setDate(new Date()), 1000);
+
+    return function cleanup() {
+      clearInterval(timer);
+    };
+  });
+
   return (
     <>
       <h2>Clock</h2>
-      TODO: add clock
+      <div>
+        <p>Time : {date.toLocaleTimeString()}</p>
+        <p>Date : {date.toLocaleDateString()}</p>
+      </div>
     </>
   );
 }
