@@ -24,14 +24,14 @@ public class Result {
     private String owner;
 
     @Override
-	public String toString() {
-		return "Shot{" +
-			"id=" + id +
-			", x='" + x + '\'' +
-			", y='" + y + '\'' +
-			", r='" + r + '\'' +
-            ", hit='" + isHit + '\'' +
-            ", owner='" + owner + '\'' + 
-			'}';
-	}
+    public String toString() {
+        return "{" +
+                "\"id\":" + "\"" + id + "\"" + "," +
+                "\"x\":" + "\"" + x + "\"" + "," +
+                "\"y\":" + "\"" + y + "\"" + "," +
+                "\"r\":" + "\"" + r + "\"" + "," +
+                "\"isHit\":" + "\"" + isHit + "\"" + "," +
+                "\"owner\":" + "\"" + owner + "\"" +
+                '}';
+    }
 }

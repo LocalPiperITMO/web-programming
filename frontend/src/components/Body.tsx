@@ -115,7 +115,7 @@ function InputContainer({ x, sx, y, sy, r, sr }) {
   );
 }
 
-function ButtonContainer({ x, y, r }) {
+function ButtonContainer({ x, y, r, act }) {
   const navigate = useNavigate();
 
   function handleClick(_event: any) {
@@ -130,11 +130,7 @@ function ButtonContainer({ x, y, r }) {
         role="group"
         aria-label="Vertical button group"
       >
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={() => sendData(x, y, r)}
-        >
+        <button type="button" className="btn btn-primary" onClick={act}>
           Submit
         </button>
         <button type="button" className="btn btn-primary">
@@ -148,7 +144,7 @@ function ButtonContainer({ x, y, r }) {
   );
 }
 
-function ResultTableContainer() {
+function ResultTableContainer({ data }) {
   return (
     <>
       <h2>Result</h2>
@@ -159,10 +155,18 @@ function ResultTableContainer() {
             <th scope="col">Y</th>
             <th scope="col">R</th>
             <th scope="col">Result</th>
-            <th scope="col">Time</th>
           </tr>
         </thead>
-        <tbody className="table-group-divider result-table-container"></tbody>
+        <tbody className="table-group-divider result-table-container">
+          {JSON.parse(data).map((item) => (
+            <tr>
+              <td scope="col">{item.x}</td>
+              <td scope="col">{item.y}</td>
+              <td scope="col">{item.r}</td>
+              <td scope="col">{item.isHit}</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </>
   );
@@ -171,6 +175,7 @@ export function BodyContainer() {
   const [x, setX] = useState("");
   const [y, setY] = useState("");
   const [r, setR] = useState("");
+  const [out, setOut] = useState("[]");
 
   const handleXClick = (e) => {
     setX(e.target.value);
@@ -182,6 +187,26 @@ export function BodyContainer() {
 
   const handleRClick = (e) => {
     setR(e.target.value);
+  };
+
+  const handleSubmit = async () => {
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        x: x,
+        y: y,
+        r: r,
+      }),
+    };
+    fetch("http://localhost:8080/process", requestOptions)
+      .then((response) => response.json())
+      .then((response) => {
+        setOut(JSON.stringify(response));
+      });
   };
 
   return (
@@ -202,10 +227,10 @@ export function BodyContainer() {
           />
         </div>
         <div className="col">
-          <ButtonContainer x={x} y={y} r={r} />
+          <ButtonContainer x={x} y={y} r={r} act={handleSubmit} />
         </div>
         <div className="col">
-          <ResultTableContainer />
+          <ResultTableContainer data={out} />
         </div>
       </div>
     </div>

@@ -34,6 +34,7 @@ public class HomeController {
     void manual(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String requestData = request.getReader().lines().collect(Collectors.joining());
         response.setStatus(200);
-        response.getWriter().println(requestData);
+
+        response.getWriter().println(repository.findAll());
     }
 }
