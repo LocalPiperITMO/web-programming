@@ -1,14 +1,18 @@
 import { useRef, useEffect } from "react";
 import { drawGraph } from "../ts/canvas";
 
-export function Canvas() {
+export function Canvas({ r }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
 
-    drawGraph(canvas, context);
+    if (r.length !== 0) {
+      drawGraph(canvas, context, r);
+    } else {
+      drawGraph(canvas, context);
+    }
   }, []);
 
   return (

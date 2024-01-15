@@ -149,8 +149,9 @@ function ResultTableContainer({ data }) {
   if (data !== "[]") {
     return (
       <>
+      <div className="result-table-container">
         <h2>Result</h2>
-        <table className="table">
+        <table className="table ">
           <thead>
             <tr>
               <th scope="col">X</th>
@@ -161,18 +162,19 @@ function ResultTableContainer({ data }) {
           </thead>
           <tbody
             id="result-table"
-            className="table-group-divider result-table-container"
+            className="table-group-divider "
           >
             {JSON.parse(data).map((item) => (
               <tr>
                 <td scope="col">{item.x}</td>
                 <td scope="col">{item.y}</td>
                 <td scope="col">{item.r}</td>
-                <td scope="col">{item.isHit}</td>
+                <td scope="col">{item.isHit? "HIT" : "MISS"}</td>
               </tr>
             ))}
           </tbody>
         </table>
+        </div>
       </>
     );
   }
@@ -255,7 +257,7 @@ export function BodyContainer() {
       <h1>Web Lab 4</h1>
       <div className="row row-cols-2">
         <div className="col">
-          <Canvas />
+          <Canvas r={r}/>
         </div>
         <div className="col">
           <InputContainer

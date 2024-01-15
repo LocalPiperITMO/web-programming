@@ -5,6 +5,7 @@
   }
 
 .result-table-container {
-    height: 300px;
+    border: 2px solid #ccc;
+    height: 200px;
     overflow-y: scroll;
 }
