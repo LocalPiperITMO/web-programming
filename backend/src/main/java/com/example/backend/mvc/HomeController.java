@@ -3,6 +3,7 @@ package com.example.backend.mvc;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
@@ -56,6 +57,29 @@ public class HomeController {
         repository.deleteAll();
         response.setStatus(200);
         response.getWriter().println("Cleared data");
+    }
+
+    @PostMapping("/signin")
+    void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String requestData = request.getReader().lines().collect(Collectors.joining());
+
+        JSONObject loginData = new JSONObject(requestData);
+
+        Auth existCheck = authRepository.findByName(loginData.getString("username"));
+        if (existCheck != null) {
+            String password = (new PasswordEncoder()).encrypt(loginData.getString("password"), existCheck.getSalt());
+            if (password == existCheck.getPassword()) {
+                response.setStatus(200);
+                response.getWriter().println("Access granted");
+            } else {
+                response.setStatus(400);
+                response.getWriter().println("Access denied. Invalid login/password");
+            }
+        } else {
+            response.setStatus(400);
+            response.getWriter().println("Access denied. Invalid login/password");
+        }
+
     }
 
     @PostMapping("/signup")

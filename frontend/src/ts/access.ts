@@ -1,4 +1,4 @@
-export async function handleRegister(u : string, p : string) {
+export async function handleAccess(u : string, p : string, rule : string) {
     const requestOptions = {
       method: "POST",
       headers: {
@@ -10,7 +10,7 @@ export async function handleRegister(u : string, p : string) {
         password: p
       }),
     };
-    const responce = await fetch("http://localhost:17017/signup", requestOptions);
+    const responce = await fetch("http://localhost:17017/" + rule, requestOptions);
     const body = await responce.text();
     return body;
 }

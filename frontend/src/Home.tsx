@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Header } from "./Index";
 import { Footer } from "./Index";
 import { useState, useEffect } from "react";
-import { handleRegister } from "./ts/access";
+import { handleAccess } from "./ts/access";
 
 function Clock() {
   let [date, setDate] = useState(new Date());
@@ -26,7 +26,7 @@ function Clock() {
   );
 }
 
-function InputGroup({ su, sp }) {
+function InputGroup({ su, sp }: any) {
   return (
     <>
       <div className="input-group flex-nowrap">
@@ -59,21 +59,30 @@ function InputGroup({ su, sp }) {
   );
 }
 
-function ButtonGroup({ u, p }) {
+function ButtonGroup({ u, p }: any) {
   const navigate = useNavigate();
   function handleClick(_event: any) {
     navigate("/main");
   }
   return (
     <>
-      <div className="btn-group" role="group" aria-label="Basic example">
-        <button type="button" onClick={handleClick} className="btn btn-primary">
+      <div className="btn-group" role="group">
+        <button
+          type="button"
+          onClick={async (e) => {
+            const verdict = await handleAccess(u, p, "signin");
+            if (verdict.trim() === "Access granted") {
+              handleClick(e);
+            }
+          }}
+          className="btn btn-primary"
+        >
           Sign In
         </button>
         <button
           type="button"
           onClick={async (e) => {
-            const verdict = await handleRegister(u, p);
+            const verdict = await handleAccess(u, p, "signup");
             if (verdict.trim() === "Access granted") {
               handleClick(e);
             }
@@ -112,7 +121,7 @@ function AuthContainer() {
           <ButtonGroup u={username} p={password} />
         </div>
         <div className="col">
-          <ErrorGroup/>
+          <ErrorGroup />
         </div>
       </ul>
     </>
