@@ -61,8 +61,8 @@ function InputGroup({ su, sp }: any) {
 
 function ButtonGroup({ u, p, se }: any) {
   const navigate = useNavigate();
-  function handleClick(_event: any) {
-    navigate("/main");
+  function handleClick(_event: any, id: number) {
+    navigate("/main", { state: { id: id } });
   }
   return (
     <>
@@ -71,8 +71,8 @@ function ButtonGroup({ u, p, se }: any) {
           type="button"
           onClick={async (e) => {
             const verdict = await handleAccess(u, p, "signin");
-            if (verdict.trim() === "Access granted") {
-              handleClick(e);
+            if (!verdict.trim().includes("Access denied")) {
+              handleClick(e, parseInt(verdict));
             } else {
               se(verdict);
             }
@@ -85,8 +85,8 @@ function ButtonGroup({ u, p, se }: any) {
           type="button"
           onClick={async (e) => {
             const verdict = await handleAccess(u, p, "signup");
-            if (verdict.trim() === "Access granted") {
-              handleClick(e);
+            if (!verdict.trim().includes("Access denied")) {
+              handleClick(e, parseInt(verdict));
             } else {
               se(verdict);
             }

@@ -70,16 +70,13 @@ public class HomeController {
             String password = SecureUtils.getSecurePassword(loginData.getString("password"), existCheck.getSalt());
             if (password.equals(existCheck.getPassword())) {
                 response.setStatus(200);
-                response.setHeader("Verdict", "OK");
-                response.getWriter().println("Access granted");
+                response.getWriter().println(authRepository.findByName(loginData.getString("username")).getId());
             } else {
                 response.setStatus(400);
-                response.setHeader("Verdict", "NO");
                 response.getWriter().println("Access denied. Invalid login/password");
             }
         } else {
             response.setStatus(400);
-            response.setHeader("Verdict", "NO");
             response.getWriter().println("Access denied. Invalid login/password");
         }
 
@@ -95,19 +92,16 @@ public class HomeController {
             Auth existCheck = authRepository.findByName(userData.getUsername());
             if (existCheck != null) {
                 response.setStatus(409);
-                response.setHeader("Verdict", "NO");
                 response.getWriter().println("Access denied. Username already in use");
             } else {
                 authRepository
                         .save(new Auth(userData.getUsername(), userData.getEncodedPassword(), userData.getSalt()));
                 response.setStatus(200);
-                response.setHeader("Verdict", "OK");
-                response.getWriter().println("Access granted");
+                response.getWriter().println(authRepository.findByName(userData.getUsername()).getId());
             }
 
         } else {
             response.setStatus(400);
-            response.setHeader("Verdict", "NO");
             response.getWriter().println("Access denied. Wrong username/password format");
         }
     }
