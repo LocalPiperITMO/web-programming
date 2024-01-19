@@ -45,32 +45,40 @@ public class HomeController {
         Shot shot = preprocessor.preprocess(requestData);
         if (shot != null) {
             repository.save(new Result(shot.getX(), shot.getY(), shot.getR(), shot.isHit(), shot.getOwner()));
-        } 
+        }
         response.setStatus(200);
 
         response.getWriter().println(repository.findAll());
     }
 
     @PostMapping("/clear")
-    void clear(HttpServletResponse response) throws IOException{
+    void clear(HttpServletResponse response) throws IOException {
         repository.deleteAll();
         response.setStatus(200);
         response.getWriter().println("Cleared data");
     }
 
     @PostMapping("/signup")
-    void register(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    void register(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String requestData = request.getReader().lines().collect(Collectors.joining());
 
         DataPreprocessor preprocessor = new DataPreprocessor();
         UserData userData = preprocessor.checkReg(requestData);
         if (userData != null) {
-            authRepository.save(new Auth(userData.getUsername(), userData.getEncodedPassword(), userData.getSalt()));
-            response.setStatus(200);
-            response.getWriter().println("Access granted");
+            Auth existCheck = authRepository.findByName(userData.getUsername());
+            if (existCheck != null) {
+                response.setStatus(409);
+                response.getWriter().println("Access denied. Username already in use");
+            } else {
+                authRepository
+                        .save(new Auth(userData.getUsername(), userData.getEncodedPassword(), userData.getSalt()));
+                response.setStatus(200);
+                response.getWriter().println("Access granted");
+            }
+
         } else {
             response.setStatus(400);
-            response.getWriter().println("Access denied");
+            response.getWriter().println("Access denied. Wrong username/password format");
         }
     }
 }

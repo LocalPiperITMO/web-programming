@@ -1,7 +1,7 @@
 package com.example.backend.entity;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AuthRepository extends CrudRepository<Auth, Long>{
-    
+public interface AuthRepository extends JpaRepository<Auth, Long>{
+    Auth findByName(String name);
 }
