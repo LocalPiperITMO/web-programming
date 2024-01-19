@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Canvas } from "./Canvas";
 import { useNavigate } from "react-router-dom";
 
-function YInput({ y, sy, data }) {
+function YInput({ sy, data }: any) {
   return (
     <input
       className="form-control"
@@ -13,7 +13,7 @@ function YInput({ y, sy, data }) {
   );
 }
 
-function XInput({ x, sx, data }) {
+function XInput({ sx, data }: any) {
   return (
     <>
       <div className="container text-center value-checkbox-container">
@@ -38,7 +38,7 @@ function XInput({ x, sx, data }) {
   );
 }
 
-function RInput({ r, sr, data }) {
+function RInput({ sr, data }: any) {
   return (
     <>
       <div className="container text-center value-checkbox-container">
@@ -64,7 +64,7 @@ function RInput({ r, sr, data }) {
   );
 }
 
-function InputContainer({ x, sx, y, sy, r, sr }) {
+function InputContainer({ sx, sy, sr }: any) {
   const inputs = [
     {
       label: "X",
@@ -91,7 +91,7 @@ function InputContainer({ x, sx, y, sy, r, sr }) {
             <h3>X</h3>
           </div>
           <div className="col">
-            <XInput x={x} sx={sx} data={inputs[0].data} />
+            <XInput sx={sx} data={inputs[0].data} />
           </div>
         </div>
         <div className="row">
@@ -99,7 +99,7 @@ function InputContainer({ x, sx, y, sy, r, sr }) {
             <h3>Y</h3>
           </div>
           <div className="col">
-            <YInput y={y} sy={sy} data={inputs[1].data} />
+            <YInput sy={sy} data={inputs[1].data} />
           </div>
         </div>
         <div className="row">
@@ -107,7 +107,7 @@ function InputContainer({ x, sx, y, sy, r, sr }) {
             <h3>R</h3>
           </div>
           <div className="col">
-            <RInput r={r} sr={sr} data={inputs[2].data} />
+            <RInput sr={sr} data={inputs[2].data} />
           </div>
         </div>
       </div>
@@ -115,7 +115,7 @@ function InputContainer({ x, sx, y, sy, r, sr }) {
   );
 }
 
-function ButtonContainer({ x, y, r, act, clear }) {
+function ButtonContainer({ act, clear }: any) {
   const navigate = useNavigate();
 
   function handleClick(_event: any) {
@@ -144,7 +144,7 @@ function ButtonContainer({ x, y, r, act, clear }) {
   );
 }
 
-function ResultTableContainer({ data }) {
+function ResultTableContainer({ data }: any) {
   if (data !== "[]") {
     return (
       <>
@@ -200,15 +200,15 @@ export function BodyContainer() {
   const [r, setR] = useState("");
   const [out, setOut] = useState("[]");
 
-  const handleXClick = (e) => {
+  const handleXClick = (e: any) => {
     setX(e.target.value);
   };
 
-  const handleYClick = (e) => {
+  const handleYClick = (e: any) => {
     setY(e.target.value);
   };
 
-  const handleRClick = (e) => {
+  const handleRClick = (e: any) => {
     if (r.length !== 0) {
       setR("");
     } else {
@@ -257,22 +257,13 @@ export function BodyContainer() {
         </div>
         <div className="col">
           <InputContainer
-            x={x}
             sx={handleXClick}
-            y={y}
             sy={handleYClick}
-            r={r}
             sr={handleRClick}
           />
         </div>
         <div className="col">
-          <ButtonContainer
-            x={x}
-            y={y}
-            r={r}
-            act={handleSubmit}
-            clear={handleClear}
-          />
+          <ButtonContainer act={handleSubmit} clear={handleClear} />
         </div>
         <div className="col">
           <ResultTableContainer data={out} />
