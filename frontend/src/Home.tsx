@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Header } from "./Index";
 import { Footer } from "./Index";
 import { useState, useEffect } from "react";
+import { handleRegister } from "./ts/access";
 
 function Clock() {
   let [date, setDate] = useState(new Date());
@@ -60,23 +61,6 @@ function InputGroup({ su, sp }) {
 
 function ButtonGroup({ u, p }) {
   const navigate = useNavigate();
-
-  async function handleRegister(_event: any) {
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({
-        username: u,
-        password: p
-      }),
-    };
-    await fetch("http://localhost:17017/signup", requestOptions).then((response) => {
-      console.log(response.text());
-    });
-  }
   function handleClick(_event: any) {
     navigate("/main");
   }
@@ -88,7 +72,12 @@ function ButtonGroup({ u, p }) {
         </button>
         <button
           type="button"
-          onClick={handleRegister}
+          onClick={async (e) => {
+            const verdict = await handleRegister(u, p);
+            if (verdict.trim() === "Access granted") {
+              handleClick(e);
+            }
+          }}
           className="btn btn-primary"
         >
           Sign Up
@@ -123,7 +112,7 @@ function AuthContainer() {
           <ButtonGroup u={username} p={password} />
         </div>
         <div className="col">
-          <ErrorGroup />
+          <ErrorGroup/>
         </div>
       </ul>
     </>
