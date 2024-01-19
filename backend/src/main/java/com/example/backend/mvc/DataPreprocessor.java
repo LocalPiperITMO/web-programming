@@ -41,8 +41,8 @@ public class DataPreprocessor {
     public UserData checkReg(String rawdata) {
         JSONObject json = new JSONObject(rawdata);
         String username = json.getString("username");
-        if (username.trim().length() == 0) {
-            System.out.println("No username provided!");
+        if (username.trim().length() == 0 || json.getString("password").trim().length() == 0) {
+            System.out.println("No username/password provided!");
             return null;
         }
         SecureRandom random = new SecureRandom();
