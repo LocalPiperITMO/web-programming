@@ -1,5 +1,6 @@
 package com.example.backend.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -17,8 +18,14 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Auth {
     private @Id @GeneratedValue Long id;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
     private byte[] salt;
 
     public Auth(String name, String password, byte[] salt) {

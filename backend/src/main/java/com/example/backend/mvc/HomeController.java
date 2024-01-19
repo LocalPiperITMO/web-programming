@@ -45,7 +45,7 @@ public class HomeController {
         DataPreprocessor preprocessor = new DataPreprocessor();
         Shot shot = preprocessor.preprocess(requestData);
         if (shot != null) {
-            repository.save(new Result(shot.getX(), shot.getY(), shot.getR(), shot.isHit(), shot.getOwner()));
+            repository.save(new Result(shot.getX(), shot.getY(), shot.getR(), shot.isHit(), null));
         }
         response.setStatus(200);
 
