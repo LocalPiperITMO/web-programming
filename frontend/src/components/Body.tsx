@@ -7,6 +7,7 @@ function YInput({ sy, data }: any) {
     <input
       className="form-control"
       type="text"
+      maxLength={10}
       placeholder={data[0] + "..." + data[1]}
       onChange={sy}
     />
