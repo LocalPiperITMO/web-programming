@@ -3,8 +3,8 @@ export function FooterContainer() {
   return (
     <div className="container text-center fixed-bottom">
       <div className="row">
-        {data.map((item) => (
-          <div className="col">{item}</div>
+        {data.map((item, index) => (
+          <div key={index} className="col">{item}</div>
         ))}
       </div>
     </div>
