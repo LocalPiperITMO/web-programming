@@ -227,7 +227,7 @@ export function BodyContainer() {
         "Access-Control-Allow-Origin": "*",
       },
     };
-    fetch("http://localhost:8080/clear", requestOptions);
+    fetch("http://localhost:17017/clear", requestOptions);
 
     setOut("[]");
   };
@@ -245,7 +245,7 @@ export function BodyContainer() {
         r: r,
       }),
     };
-    fetch("http://localhost:8080/process", requestOptions)
+    fetch("http://localhost:17017/process", requestOptions)
       .then((response) => response.json())
       .then((response) => {
         setOut(JSON.stringify(response));

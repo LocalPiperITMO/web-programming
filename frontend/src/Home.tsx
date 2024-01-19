@@ -25,7 +25,7 @@ function Clock() {
   );
 }
 
-function InputGroup() {
+function InputGroup({ su, sp }) {
   return (
     <>
       <div className="input-group flex-nowrap">
@@ -38,6 +38,7 @@ function InputGroup() {
           placeholder="Enter your name"
           aria-label="Username"
           aria-describedby="addon-wrapping"
+          onChange={su}
         />
       </div>
       <div className="input-group flex-nowrap">
@@ -50,15 +51,32 @@ function InputGroup() {
           placeholder="Enter your password"
           aria-label="Password"
           aria-describedby="addon-wrapping"
+          onChange={sp}
         />
       </div>
     </>
   );
 }
 
-function ButtonGroup() {
+function ButtonGroup({ u, p }) {
   const navigate = useNavigate();
 
+  async function handleRegister(_event: any) {
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        username: u,
+        password: p
+      }),
+    };
+    await fetch("http://localhost:17017/signup", requestOptions).then((response) => {
+      console.log(response.text());
+    });
+  }
   function handleClick(_event: any) {
     navigate("/main");
   }
@@ -68,7 +86,11 @@ function ButtonGroup() {
         <button type="button" onClick={handleClick} className="btn btn-primary">
           Sign In
         </button>
-        <button type="button" onClick={handleClick} className="btn btn-primary">
+        <button
+          type="button"
+          onClick={handleRegister}
+          className="btn btn-primary"
+        >
           Sign Up
         </button>
       </div>
@@ -80,15 +102,25 @@ function ErrorGroup() {
   return <>TODO: errors</>;
 }
 function AuthContainer() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleUsername = (e: any) => {
+    setUsername(e.target.value);
+  };
+
+  const handlePassword = (e: any) => {
+    setPassword(e.target.value);
+  };
   return (
     <>
       <h2>Log in/Register</h2>
       <ul className="list-group">
         <div className="col">
-          <InputGroup />
+          <InputGroup su={handleUsername} sp={handlePassword} />
         </div>
         <div className="col">
-          <ButtonGroup />
+          <ButtonGroup u={username} p={password} />
         </div>
         <div className="col">
           <ErrorGroup />

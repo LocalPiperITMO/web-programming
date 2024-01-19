@@ -1,6 +1,12 @@
 package com.example.backend.mvc;
 
+import java.security.SecureRandom;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.example.backend.entity.Shot;
+import com.example.backend.entity.UserData;
 
 public class DataPreprocessor {
     public static boolean calculateHit(double x, double y, long r) {
@@ -11,20 +17,38 @@ public class DataPreprocessor {
     }
 
     public Shot preprocess(String rawdata) {
-        String filtered = rawdata.replaceAll("[^0-9,-]", "");
-        String[] numbers = filtered.split(",");
-
         try {
-            double x = Double.parseDouble(numbers[0]);
-            double y = Double.parseDouble(numbers[1]);
-            long r = Long.parseLong(numbers[2]);
+            JSONObject json = new JSONObject(rawdata);
+            Double x = Double.parseDouble(json.get("x").toString());
+            Double y = Double.parseDouble(json.get("y").toString());
+            Long r = Long.parseLong(json.get("r").toString());
 
-            return new Shot(x, y, r, "test");
+            Shot shot = new Shot(x, y, r, "test");
+            Validator validator = new Validator();
+            if (!validator.validate(shot)) {
+                System.out.println("Invalid values");
+                return null;
+            }
+            return shot;
         } catch (NumberFormatException nfe) {
-            System.out.println("Invalid arguments!");
-        } catch (IndexOutOfBoundsException ioobe) {
-            System.out.println("Invalid number of arguments!");
+            System.out.println("Invalid data types!");
+        } catch (JSONException jse) {
+            System.out.println("Invalid number of args");
         }
         return null;
+    }
+
+    public UserData checkReg(String rawdata) {
+        JSONObject json = new JSONObject(rawdata);
+        String username = json.getString("username");
+        if (username.trim().length() == 0) {
+            System.out.println("No username provided!");
+            return null;
+        }
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        String password = (new PasswordEncoder()).encrypt(json.getString("password"), salt.toString());
+        return new UserData(username, password, salt.toString());
     }
 }
