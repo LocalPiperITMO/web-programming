@@ -9,5 +9,5 @@ import lombok.Getter;
 public class UserData {
     private String username;
     private String encodedPassword;
-    private String salt;
+    private byte[] salt;
 }

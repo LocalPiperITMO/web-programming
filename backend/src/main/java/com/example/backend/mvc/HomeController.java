@@ -67,8 +67,8 @@ public class HomeController {
 
         Auth existCheck = authRepository.findByName(loginData.getString("username"));
         if (existCheck != null) {
-            String password = (new PasswordEncoder()).encrypt(loginData.getString("password"), existCheck.getSalt());
-            if (password == existCheck.getPassword()) {
+            String password = SecureUtils.getSecurePassword(loginData.getString("password"), existCheck.getSalt());
+            if (password.equals(existCheck.getPassword())) {
                 response.setStatus(200);
                 response.getWriter().println("Access granted");
             } else {

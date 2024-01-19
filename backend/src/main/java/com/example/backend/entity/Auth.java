@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="users", schema="public")
+@Table(name = "users", schema = "public")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -19,9 +19,9 @@ public class Auth {
     private @Id @GeneratedValue Long id;
     private String name;
     private String password;
-    private String salt;
+    private byte[] salt;
 
-    public Auth(String name, String password, String salt) {
+    public Auth(String name, String password, byte[] salt) {
         this.name = name;
         this.password = password;
         this.salt = salt;

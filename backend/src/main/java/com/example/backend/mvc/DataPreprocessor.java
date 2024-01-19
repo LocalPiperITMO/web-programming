@@ -1,6 +1,6 @@
 package com.example.backend.mvc;
 
-import java.security.SecureRandom;
+import java.security.NoSuchAlgorithmException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,16 +39,19 @@ public class DataPreprocessor {
     }
 
     public UserData checkReg(String rawdata) {
+        try {
         JSONObject json = new JSONObject(rawdata);
         String username = json.getString("username");
         if (username.trim().length() == 0 || json.getString("password").trim().length() == 0) {
             System.out.println("No username/password provided!");
             return null;
         }
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-        String password = (new PasswordEncoder()).encrypt(json.getString("password"), salt.toString());
-        return new UserData(username, password, salt.toString());
+        byte[] salt = SecureUtils.getSalt();
+        String password = SecureUtils.getSecurePassword(json.getString("password"), salt);
+        return new UserData(username, password, salt);
+    } catch (NoSuchAlgorithmException nsae) {
+        System.err.println("UNKNOWN ERROR");
+        return null;
+    }
     }
 }
