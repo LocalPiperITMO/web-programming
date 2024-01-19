@@ -59,7 +59,7 @@ function InputGroup({ su, sp }: any) {
   );
 }
 
-function ButtonGroup({ u, p }: any) {
+function ButtonGroup({ u, p, se }: any) {
   const navigate = useNavigate();
   function handleClick(_event: any) {
     navigate("/main");
@@ -73,6 +73,8 @@ function ButtonGroup({ u, p }: any) {
             const verdict = await handleAccess(u, p, "signin");
             if (verdict.trim() === "Access granted") {
               handleClick(e);
+            } else {
+              se(verdict);
             }
           }}
           className="btn btn-primary"
@@ -85,6 +87,8 @@ function ButtonGroup({ u, p }: any) {
             const verdict = await handleAccess(u, p, "signup");
             if (verdict.trim() === "Access granted") {
               handleClick(e);
+            } else {
+              se(verdict);
             }
           }}
           className="btn btn-primary"
@@ -96,12 +100,20 @@ function ButtonGroup({ u, p }: any) {
   );
 }
 
-function ErrorGroup() {
-  return <>TODO: errors</>;
+function ErrorGroup({ e }: any) {
+  if (e.trim().length != 0) {
+    return (
+      <>
+        <div className="text-bg-danger p-3">{e}</div>
+      </>
+    );
+  }
+  return <></>;
 }
 function AuthContainer() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleUsername = (e: any) => {
     setUsername(e.target.value);
@@ -118,10 +130,10 @@ function AuthContainer() {
           <InputGroup su={handleUsername} sp={handlePassword} />
         </div>
         <div className="col">
-          <ButtonGroup u={username} p={password} />
+          <ButtonGroup u={username} p={password} se={setError} />
         </div>
         <div className="col">
-          <ErrorGroup />
+          <ErrorGroup e={error} />
         </div>
       </ul>
     </>
