@@ -17,8 +17,8 @@ function XInput({ x, sx, data }) {
   return (
     <>
       <div className="container text-center value-checkbox-container">
-        {data.map((item: string) => (
-          <div className="col">
+        {data.map((item: string, index: number) => (
+          <div key={index} className="col">
             <div className="form-check">
               <input
                 className="form-check-input"
@@ -42,11 +42,10 @@ function RInput({ r, sr, data }) {
   return (
     <>
       <div className="container text-center value-checkbox-container">
-        {data.map((item: string, index) => (
-          <div className="col">
+        {data.map((item: string, index: number) => (
+          <div key={index} className="col">
             <div className="form-check">
               <input
-                key={index}
                 className="form-check-input"
                 type="checkbox"
                 value={item}
@@ -149,31 +148,28 @@ function ResultTableContainer({ data }) {
   if (data !== "[]") {
     return (
       <>
-      <div className="result-table-container">
-        <h2>Result</h2>
-        <table className="table ">
-          <thead>
-            <tr>
-              <th scope="col">X</th>
-              <th scope="col">Y</th>
-              <th scope="col">R</th>
-              <th scope="col">Result</th>
-            </tr>
-          </thead>
-          <tbody
-            id="result-table"
-            className="table-group-divider "
-          >
-            {JSON.parse(data).map((item) => (
+        <div className="result-table-container">
+          <h2>Result</h2>
+          <table className="table ">
+            <thead>
               <tr>
-                <td scope="col">{item.x}</td>
-                <td scope="col">{item.y}</td>
-                <td scope="col">{item.r}</td>
-                <td scope="col">{item.isHit? "HIT" : "MISS"}</td>
+                <th scope="col">X</th>
+                <th scope="col">Y</th>
+                <th scope="col">R</th>
+                <th scope="col">Result</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody id="result-table" className="table-group-divider ">
+              {JSON.parse(data).map((item: any, index: number) => (
+                <tr key={index}>
+                  <td scope="col">{item.x}</td>
+                  <td scope="col">{item.y}</td>
+                  <td scope="col">{item.r}</td>
+                  <td scope="col">{item.isHit ? "HIT" : "MISS"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </>
     );
@@ -257,7 +253,7 @@ export function BodyContainer() {
       <h1>Web Lab 4</h1>
       <div className="row row-cols-2">
         <div className="col">
-          <Canvas r={r}/>
+          <Canvas r={r} />
         </div>
         <div className="col">
           <InputContainer
