@@ -1,6 +1,7 @@
 import { HeaderContainer } from "./components/Header";
 import { BodyContainer } from "./components/Body";
 import { FooterContainer } from "./components/Footer";
+import ErrorBoundary from "./ErrorBoundary";
 export function Header() {
   return <HeaderContainer></HeaderContainer>;
 }
@@ -17,7 +18,9 @@ export default function Main() {
     <>
       <div className="container-fluid">
         <Header></Header>
-        <Body></Body>
+        <ErrorBoundary>
+          <Body></Body>
+        </ErrorBoundary>
         <Footer></Footer>
       </div>
     </>

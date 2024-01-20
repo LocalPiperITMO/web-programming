@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Canvas } from "./Canvas";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function YInput({ sy, data }: any) {
   return (
@@ -200,6 +200,8 @@ export function BodyContainer() {
   const [y, setY] = useState("");
   const [r, setR] = useState("");
   const [out, setOut] = useState("[]");
+  const location = useLocation();
+  const { user } = location.state;
 
   const handleXClick = (e: any) => {
     setX(e.target.value);
@@ -223,6 +225,9 @@ export function BodyContainer() {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
       },
+      body: JSON.stringify({
+        id: user,
+      }),
     };
     fetch("http://localhost:17017/clear", requestOptions);
 
@@ -240,6 +245,7 @@ export function BodyContainer() {
         x: x,
         y: y,
         r: r,
+        id: user,
       }),
     };
     fetch("http://localhost:17017/process", requestOptions)
@@ -251,7 +257,7 @@ export function BodyContainer() {
 
   return (
     <div className="container text-center">
-      <h1>Web Lab 4</h1>
+      <h1>Web Lab 4 {user}</h1>
       <div className="row row-cols-2">
         <div className="col">
           <Canvas r={r} />
