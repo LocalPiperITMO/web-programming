@@ -22,6 +22,11 @@ class ErrorBoundary extends Component {
         <div className="container text-center">
           <h1>YOU SHALL NOT PASS</h1>
           <p>Lost? Forgotten? Try authorizing first!</p>
+          <input
+            type="button"
+            value="To Main Page"
+            onClick={() => (location.pathname = "../")}
+          />
         </div>
       );
     }
