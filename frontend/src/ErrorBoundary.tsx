@@ -1,6 +1,4 @@
 import { Component } from "react";
-import { withRouter } from "./ts/routing";
-
 class ErrorBoundary extends Component {
   constructor(props: any) {
     super(props);
@@ -22,11 +20,13 @@ class ErrorBoundary extends Component {
         <div className="container text-center">
           <h1>YOU SHALL NOT PASS</h1>
           <p>Lost? Forgotten? Try authorizing first!</p>
-          <input
-            type="button"
-            value="To Main Page"
+          <button
+            typeof="button"
+            className="btn btn-primary"
             onClick={() => (location.pathname = "../")}
-          />
+          >
+            Back To Main Page
+          </button>
         </div>
       );
     }
@@ -35,4 +35,4 @@ class ErrorBoundary extends Component {
   }
 }
 
-export default withRouter(ErrorBoundary);
+export default ErrorBoundary;
