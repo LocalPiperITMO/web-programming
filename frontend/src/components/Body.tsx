@@ -166,7 +166,7 @@ function ResultTableContainer({ data }: any) {
                   <td scope="col">{item.x}</td>
                   <td scope="col">{item.y}</td>
                   <td scope="col">{item.r}</td>
-                  <td scope="col">{item.isHit ? "HIT" : "MISS"}</td>
+                  <td scope="col">{item.isHit === "true" ? "HIT" : "MISS"}</td>
                 </tr>
               ))}
             </tbody>
