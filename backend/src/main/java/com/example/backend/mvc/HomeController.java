@@ -20,6 +20,7 @@ import com.example.backend.entity.UserData;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 
 @Controller
 public class HomeController {
@@ -44,17 +45,34 @@ public class HomeController {
 
         DataPreprocessor preprocessor = new DataPreprocessor();
         Shot shot = preprocessor.preprocess(requestData);
-        if (shot != null) {
-            repository.save(new Result(shot.getX(), shot.getY(), shot.getR(), shot.isHit(), null));
+        long userId = new JSONObject(requestData).getLong("id");
+        Auth owner = authRepository.findById(userId);
+        if (owner == null) {
+            response.setStatus(403);
+            response.getWriter().println(repository.findByOwner(owner));
+            return;
         }
-        response.setStatus(200);
 
-        response.getWriter().println(repository.findAll());
+        if (shot != null) {
+            repository.save(new Result(shot.getX(), shot.getY(), shot.getR(), shot.isHit(), owner));
+        }
+
+        response.setStatus(200);
+        response.getWriter().println(repository.findByOwner(owner));
     }
 
     @PostMapping("/clear")
-    void clear(HttpServletResponse response) throws IOException {
-        repository.deleteAll();
+    @Transactional
+    void clear(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String requestData = request.getReader().lines().collect(Collectors.joining());
+        long userId = new JSONObject(requestData).getLong("id");
+        Auth owner = authRepository.findById(userId);
+        if (owner == null) {
+            response.setStatus(403);
+            response.getWriter().println("ERROR: Not authorized");
+            return;
+        }
+        repository.deleteByOwner(owner);
         response.setStatus(200);
         response.getWriter().println("Cleared data");
     }

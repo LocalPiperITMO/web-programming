@@ -1,7 +1,11 @@
 package com.example.backend.entity;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.List;
 
-public interface ResultRepository extends CrudRepository<Result, Long> {
+import org.springframework.data.jpa.repository.JpaRepository;
 
+public interface ResultRepository extends JpaRepository<Result, Long> {
+    List<Result> findByOwner(Auth owner);
+
+    long deleteByOwner(Auth owner);
 }

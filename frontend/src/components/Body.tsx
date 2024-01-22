@@ -201,7 +201,7 @@ export function BodyContainer() {
   const [r, setR] = useState("");
   const [out, setOut] = useState("[]");
   const location = useLocation();
-  const { user } = location.state;
+  const user = location.state.id;
 
   const handleXClick = (e: any) => {
     setX(e.target.value);
