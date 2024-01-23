@@ -20,10 +20,16 @@ public class DataPreprocessor {
     }
 
     public static boolean calculateHit(double x, double y, long r) {
-        boolean sector2 = x <= 0 && y >= 0 && x >= -r && y <= r;
-        boolean sector3 = x <= 0 && y <= 0 && (Math.pow(x, 2) + Math.pow(y, 2)) <= Math.pow(r, 2);
-        boolean sector4 = x >= 0 && y <= 0 && y >= (x * 2 - r);
-        return sector2 || sector3 || sector4;
+        if (r >= 0) {
+            boolean sector2 = x <= 0 && y >= 0 && x >= -r && y <= r;
+            boolean sector3 = x <= 0 && y <= 0 && (Math.pow(x, 2) + Math.pow(y, 2)) <= Math.pow(r, 2);
+            boolean sector4 = x >= 0 && y <= 0 && y >= (x * 2 - r);
+            return sector2 || sector3 || sector4;
+        }
+        boolean sector1 = x >= 0 && y >= 0 && (Math.pow(x, 2) + Math.pow(y, 2)) <= Math.pow(r, 2);
+        boolean sector2 = x <= 0 && y >= 0 && y <= (x * 2 - r);
+        boolean sector4 = x >= 0 && y <= 0 && x <= Math.abs(r) && y >= r;
+        return sector1 || sector2 || sector4;
     }
 
     public Shot preprocess(String rawdata) {
@@ -37,7 +43,6 @@ public class DataPreprocessor {
             System.out.println(r);
             Shot shot = new Shot(x, y, r);
             shot.calculate();
-            Validator validator = new Validator();
             /*
              * if (!validator.validate(shot)) {
              * System.out.println("Invalid values");

@@ -1,4 +1,4 @@
-export function drawGraph(canvas, ctx, r = 3) {
+export function drawGraph(canvas: any, ctx: any, r = 3) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.beginPath();
 
@@ -69,7 +69,7 @@ export function drawGraph(canvas, ctx, r = 3) {
   ctx.stroke();
 }
 
-export function drawPoint(ctx, width, height, pointData) {
+export function drawPoint(ctx: any, width: any, height: any, pointData: any) {
   const x = width / 2 + (width / 2) * (pointData.x / 5);
   const y = height / 2 - (height / 2) * (pointData.y / 5);
   // drawing
@@ -81,7 +81,7 @@ export function drawPoint(ctx, width, height, pointData) {
   ctx.restore();
 }
 
-export async function sendPointData(x, y, r, id) {
+export async function sendPointData(x: any, y: any, r: any, id: number) {
   const requestOptions = {
     method: "POST",
     headers: {
