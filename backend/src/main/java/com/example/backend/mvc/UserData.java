@@ -1,8 +1,7 @@
-package com.example.backend.entity;
+package com.example.backend.mvc;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
 
 @Getter
 @AllArgsConstructor

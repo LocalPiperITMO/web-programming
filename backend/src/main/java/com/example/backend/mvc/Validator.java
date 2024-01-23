@@ -3,8 +3,6 @@ package com.example.backend.mvc;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.backend.entity.Shot;
-
 public class Validator {
     private List<Double> xDataArray = new ArrayList<>();
     private List<Long> rDataArray = new ArrayList<>();
@@ -33,11 +31,11 @@ public class Validator {
         yLeft = -3;
         yRight = 5;
     }
-     
+
     public boolean validate(Shot shot) {
         return xDataArray.contains(shot.getX()) &&
-        shot.getY() > yLeft && shot.getY() < yRight &&
-        rDataArray.contains(shot.getR()); 
+                shot.getY() > yLeft && shot.getY() < yRight &&
+                rDataArray.contains(shot.getR());
     }
-    
+
 }

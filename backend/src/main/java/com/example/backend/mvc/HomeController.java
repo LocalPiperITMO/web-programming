@@ -15,8 +15,7 @@ import com.example.backend.entity.Auth;
 import com.example.backend.entity.AuthRepository;
 import com.example.backend.entity.Result;
 import com.example.backend.entity.ResultRepository;
-import com.example.backend.entity.Shot;
-import com.example.backend.entity.UserData;
+import com.google.gson.Gson;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -56,9 +55,9 @@ public class HomeController {
         if (shot != null) {
             repository.save(new Result(shot.getX(), shot.getY(), shot.getR(), shot.isHit(), owner));
         }
-
+        String responseJSON = (new Gson()).toJson(preprocessor.safeTransform(repository.findByOwner(owner)));
         response.setStatus(200);
-        response.getWriter().println(repository.findByOwner(owner));
+        response.getWriter().println(responseJSON);
     }
 
     @PostMapping("/clear")

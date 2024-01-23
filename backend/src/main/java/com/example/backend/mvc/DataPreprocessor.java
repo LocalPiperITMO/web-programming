@@ -1,14 +1,24 @@
 package com.example.backend.mvc;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.backend.entity.Shot;
-import com.example.backend.entity.UserData;
+import com.example.backend.entity.Result;
 
 public class DataPreprocessor {
+
+    public List<Shot> safeTransform(List<Result> results) {
+        List<Shot> shots = new ArrayList<>();
+        for (Result result : results) {
+            shots.add(new Shot(result.getX(), result.getY(), result.getR(), result.isHit()));
+        }
+        return shots;
+    }
+
     public static boolean calculateHit(double x, double y, long r) {
         boolean sector2 = x <= 0 && y >= 0 && x >= -r && y <= r;
         boolean sector3 = x <= 0 && y <= 0 && (Math.pow(x, 2) + Math.pow(y, 2)) <= Math.pow(r, 2);
@@ -23,7 +33,8 @@ public class DataPreprocessor {
             Double y = Double.parseDouble(json.get("y").toString());
             Long r = Long.parseLong(json.get("r").toString());
 
-            Shot shot = new Shot(x, y, r, "test");
+            Shot shot = new Shot(x, y, r);
+            shot.calculate();
             Validator validator = new Validator();
             if (!validator.validate(shot)) {
                 System.out.println("Invalid values");
@@ -40,18 +51,18 @@ public class DataPreprocessor {
 
     public UserData checkReg(String rawdata) {
         try {
-        JSONObject json = new JSONObject(rawdata);
-        String username = json.getString("username");
-        if (username.trim().length() == 0 || json.getString("password").trim().length() == 0) {
-            System.out.println("No username/password provided!");
+            JSONObject json = new JSONObject(rawdata);
+            String username = json.getString("username");
+            if (username.trim().length() == 0 || json.getString("password").trim().length() == 0) {
+                System.out.println("No username/password provided!");
+                return null;
+            }
+            byte[] salt = SecureUtils.getSalt();
+            String password = SecureUtils.getSecurePassword(json.getString("password"), salt);
+            return new UserData(username, password, salt);
+        } catch (NoSuchAlgorithmException nsae) {
+            System.err.println("UNKNOWN ERROR");
             return null;
         }
-        byte[] salt = SecureUtils.getSalt();
-        String password = SecureUtils.getSecurePassword(json.getString("password"), salt);
-        return new UserData(username, password, salt);
-    } catch (NoSuchAlgorithmException nsae) {
-        System.err.println("UNKNOWN ERROR");
-        return null;
-    }
     }
 }
