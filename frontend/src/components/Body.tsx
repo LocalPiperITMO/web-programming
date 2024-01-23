@@ -3,6 +3,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Canvas } from "./Canvas";
 import { validate } from "../ts/validate";
 
+export type TPoint = {
+  x: number,
+  y: number,
+  scale: number
+}
+
 function YInput({ sy, data }: any) {
   return (
     <input

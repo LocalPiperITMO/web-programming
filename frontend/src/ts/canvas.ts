@@ -81,6 +81,10 @@ export function drawPoint(ctx: any, width: any, height: any, pointData: any) {
   ctx.restore();
 }
 
+export async function getPoints(user: number, scale: number) {
+  
+}
+
 export async function sendPointData(x: any, y: any, r: any, id: number) {
   const requestOptions = {
     method: "POST",
