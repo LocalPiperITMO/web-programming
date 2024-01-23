@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Canvas } from "./Canvas";
+import { useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Canvas } from "./Canvas";
 
 function YInput({ sy, data }: any) {
   return (
@@ -52,7 +52,6 @@ function RInput({ sr, data }: any) {
                 value={item}
                 id={"rCheck" + item}
                 onClick={sr}
-                disabled={parseInt(item) <= 0}
               />
               <label className="form-check-label" htmlFor={"rCheck" + item}>
                 {item}
@@ -202,7 +201,6 @@ export function BodyContainer() {
   const [out, setOut] = useState("[]");
   const location = useLocation();
   const user = location.state.id;
-
   const handleXClick = (e: any) => {
     setX(e.target.value);
   };
@@ -212,11 +210,7 @@ export function BodyContainer() {
   };
 
   const handleRClick = (e: any) => {
-    if (r.length !== 0) {
-      setR("");
-    } else {
-      setR(e.target.value);
-    }
+    setR(e.target.value);
   };
   const handleClear = async () => {
     const requestOptions = {
@@ -260,7 +254,7 @@ export function BodyContainer() {
       <h1>Web Lab 4 {user}</h1>
       <div className="row row-cols-2">
         <div className="col">
-          <Canvas r={r} />
+          <Canvas width={300} height={300} r={r} sr={setR} />
         </div>
         <div className="col">
           <InputContainer
