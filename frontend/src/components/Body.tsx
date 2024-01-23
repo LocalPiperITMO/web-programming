@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Canvas } from "./Canvas";
+import { validate } from "../ts/validate";
 
 function YInput({ sy, data }: any) {
   return (
@@ -194,11 +195,24 @@ function ResultTableContainer({ data }: any) {
     </>
   );
 }
+
+function ErrorContainer({ errors }: any) {
+  if (errors !== "") {
+    return (
+      <div className="container text-center">
+        <h2>Error</h2>
+        <p>{errors}</p>
+      </div>
+    );
+  }
+  return <></>;
+}
 export function BodyContainer() {
   const [x, setX] = useState("");
   const [y, setY] = useState("");
   const [r, setR] = useState("");
   const [out, setOut] = useState("[]");
+  const [err, setErr] = useState("");
   const location = useLocation();
   const user = location.state.id;
   const handleXClick = (e: any) => {
@@ -228,25 +242,35 @@ export function BodyContainer() {
     setOut("[]");
   };
 
+  const handleChange = (message: any) => {
+    setErr(message);
+  };
+
   const handleSubmit = async () => {
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({
-        x: x,
-        y: y,
-        r: r,
-        id: user,
-      }),
-    };
-    fetch("http://localhost:17017/process", requestOptions)
-      .then((response) => response.json())
-      .then((response) => {
-        setOut(JSON.stringify(response));
-      });
+    const message = validate(x, y, r);
+    if (message.pass) {
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({
+          x: x,
+          y: y,
+          r: r,
+          id: user,
+        }),
+      };
+      fetch("http://localhost:17017/process", requestOptions)
+        .then((response) => response.json())
+        .then((response) => {
+          setOut(JSON.stringify(response));
+          handleChange("");
+        });
+    } else {
+      handleChange(message.verdict);
+    }
   };
 
   return (
@@ -270,6 +294,7 @@ export function BodyContainer() {
           <ResultTableContainer data={out} />
         </div>
       </div>
+      <ErrorContainer errors={err} />
     </div>
   );
 }
