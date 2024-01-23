@@ -41,7 +41,7 @@ public class HomeController {
     @PostMapping("/process")
     void process(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String requestData = request.getReader().lines().collect(Collectors.joining());
-
+        System.out.println(requestData);
         DataPreprocessor preprocessor = new DataPreprocessor();
         Shot shot = preprocessor.preprocess(requestData);
         long userId = new JSONObject(requestData).getLong("id");

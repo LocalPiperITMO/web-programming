@@ -20,7 +20,10 @@ export function drawGraph(canvas, ctx, r = 3) {
   // Filling area in the second quadrant (triangle)
   ctx.moveTo(canvas.width / 2, canvas.height / 2);
   ctx.lineTo(canvas.width / 2, canvas.height / 2 + (canvas.height / 2 / 5) * r);
-  ctx.lineTo(canvas.width / 2 + (canvas.width / 2 / 5) * r/2, canvas.height / 2);
+  ctx.lineTo(
+    canvas.width / 2 + ((canvas.width / 2 / 5) * r) / 2,
+    canvas.height / 2
+  );
   ctx.lineTo(canvas.width / 2, canvas.height / 2);
   ctx.fill();
 
@@ -64,4 +67,37 @@ export function drawGraph(canvas, ctx, r = 3) {
   ctx.fillText("Y", canvas.width / 2 + 10, 20);
 
   ctx.stroke();
+}
+
+export function drawPoint(ctx, width, height, pointData) {
+  const x = width / 2 + (width / 2) * (pointData.x / 5);
+  const y = height / 2 - (height / 2) * (pointData.y / 5);
+  // drawing
+  ctx.save();
+  ctx.beginPath();
+  ctx.fillStyle = pointData.isHit ? "green" : "red";
+  ctx.arc(x, y, 4, 0, 2 * Math.PI);
+  ctx.fill();
+  ctx.restore();
+}
+
+export async function sendPointData(x, y, r, id) {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    body: JSON.stringify({
+      x: x.toString(),
+      y: y.toString(),
+      r: r.toString(),
+      id: id,
+    }),
+  };
+  return await fetch("http://localhost:17017/process", requestOptions)
+    .then((response) => response.json())
+    .then((response) => {
+      return JSON.stringify(response);
+    });
 }

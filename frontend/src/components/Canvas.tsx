@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
+import { drawPoint, sendPointData } from "../ts/canvas";
 
-export function Canvas({ width, height, r }: any) {
+export function Canvas({ width, height, r, out, user, so }: any) {
   const canvasRef = useRef(null);
   const drawGraph = (ctx) => {
     ctx.clearRect(0, 0, width, height);
@@ -79,16 +80,55 @@ export function Canvas({ width, height, r }: any) {
 
     ctx.stroke();
   };
+  const drawPoints = (ctx) => {
+    console.log(out);
+    JSON.parse(out).array.forEach((element: any) => {
+      element.x = width / 2 + (width / 3) * (element.x / r);
+      element.y = height / 2 - (height / 2.95) * (element.y / r);
+      ctx.save();
+      ctx.beginPath();
+      ctx.fillStyle = "red";
+      ctx.arc(element.x, element.y, 4, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.restore();
+    });
+  };
+  const clearCanvas = (ctx) => {
+    ctx.beginPath();
+    ctx.clearRect(0, 0, width, height);
+  };
+
+  const canvasClick = async (evt, canvasRef) => {
+    const canvas = canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+    const ctx = canvas.getContext("2d");
+    const userX = (evt.clientX - rect.left - rect.width / 2) / 30;
+    const userY = -(evt.clientY - rect.top - rect.height / 2) / 30;
+    const pointData = await sendPointData(userX, userY, r, user);
+    const points = JSON.parse(pointData);
+    drawPoint(ctx, width, height, points[points.length - 1]);
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
     drawGraph(context);
-  }, [drawGraph]);
+    if (out) {
+      drawPoints(context);
+    } else {
+      clearCanvas(context);
+      drawGraph(context);
+    }
+  }, [drawGraph, drawPoints]);
 
   return (
     <>
-      <canvas ref={canvasRef} width={width} height={height} />
+      <canvas
+        ref={canvasRef}
+        onClick={(e) => canvasClick(e, canvasRef)}
+        width={width}
+        height={height}
+      />
     </>
   );
 }

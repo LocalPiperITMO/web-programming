@@ -22,7 +22,7 @@ public class DataPreprocessor {
     public static boolean calculateHit(double x, double y, long r) {
         boolean sector2 = x <= 0 && y >= 0 && x >= -r && y <= r;
         boolean sector3 = x <= 0 && y <= 0 && (Math.pow(x, 2) + Math.pow(y, 2)) <= Math.pow(r, 2);
-        boolean sector4 = x >= 0 && y <= 0 && y <= (x * 2 - r);
+        boolean sector4 = x >= 0 && y <= 0 && y >= (x * 2 - r);
         return sector2 || sector3 || sector4;
     }
 
@@ -32,14 +32,18 @@ public class DataPreprocessor {
             Double x = Double.parseDouble(json.get("x").toString());
             Double y = Double.parseDouble(json.get("y").toString());
             Long r = Long.parseLong(json.get("r").toString());
-
+            System.out.println(x);
+            System.out.println(y);
+            System.out.println(r);
             Shot shot = new Shot(x, y, r);
             shot.calculate();
             Validator validator = new Validator();
-            if (!validator.validate(shot)) {
-                System.out.println("Invalid values");
-                return null;
-            }
+            /*
+             * if (!validator.validate(shot)) {
+             * System.out.println("Invalid values");
+             * return null;
+             * }
+             */
             return shot;
         } catch (NumberFormatException nfe) {
             System.out.println("Invalid data types!");

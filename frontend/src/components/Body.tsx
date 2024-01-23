@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Canvas } from "./Canvas";
 import { validate } from "../ts/validate";
@@ -166,7 +166,7 @@ function ResultTableContainer({ data }: any) {
                   <td scope="col">{item.x}</td>
                   <td scope="col">{item.y}</td>
                   <td scope="col">{item.r}</td>
-                  <td scope="col">{item.isHit === "true" ? "HIT" : "MISS"}</td>
+                  <td scope="col">{item.isHit ? "HIT" : "MISS"}</td>
                 </tr>
               ))}
             </tbody>
@@ -210,7 +210,7 @@ function ErrorContainer({ errors }: any) {
 export function BodyContainer() {
   const [x, setX] = useState("");
   const [y, setY] = useState("");
-  const [r, setR] = useState("");
+  const [r, setR] = useState("0");
   const [out, setOut] = useState("[]");
   const [err, setErr] = useState("");
   const location = useLocation();
@@ -272,13 +272,22 @@ export function BodyContainer() {
       handleChange(message.verdict);
     }
   };
+  useEffect(() => {}, []);
 
   return (
     <div className="container text-center">
-      <h1>Web Lab 4 {user}</h1>
+      <h1>Web Lab 4</h1>
       <div className="row row-cols-2">
         <div className="col">
-          <Canvas width={300} height={300} r={r} sr={setR} />
+          <Canvas
+            width={300}
+            height={300}
+            r={r}
+            sr={setR}
+            points={out}
+            so={setOut}
+            user={user}
+          />
         </div>
         <div className="col">
           <InputContainer

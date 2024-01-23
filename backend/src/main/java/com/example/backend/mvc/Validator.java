@@ -33,9 +33,10 @@ public class Validator {
     }
 
     public boolean validate(Shot shot) {
-        return xDataArray.contains(shot.getX()) &&
+        return shot.getX() >= xDataArray.get(0) &&
+                shot.getX() <= xDataArray.get(xDataArray.size() - 1) &&
                 shot.getY() > yLeft && shot.getY() < yRight &&
-                rDataArray.contains(shot.getR());
+                shot.getR() >= rDataArray.get(0) && shot.getR() <= rDataArray.get(rDataArray.size() - 1);
     }
 
 }
