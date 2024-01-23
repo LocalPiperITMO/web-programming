@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Canvas } from "./Canvas";
 import { validate } from "../ts/validate";
+import { sendPointData } from "../ts/canvas";
 
 export type TPoint = {
   x: number,
@@ -123,10 +124,6 @@ function InputContainer({ sx, sy, sr }: any) {
 function ButtonContainer({ act, clear }: any) {
   const navigate = useNavigate();
 
-  function handleClick(_event: any) {
-    navigate("../");
-  }
-
   return (
     <>
       <h2>Menu</h2>
@@ -141,7 +138,7 @@ function ButtonContainer({ act, clear }: any) {
         <button type="button" className="btn btn-primary" onClick={clear}>
           Clear table
         </button>
-        <button type="button" className="btn btn-primary" onClick={handleClick}>
+        <button type="button" className="btn btn-primary" onClick={() => navigate("../")}>
           Back To Main Page
         </button>
       </div>
@@ -214,22 +211,12 @@ function ErrorContainer({ errors }: any) {
 export function BodyContainer() {
   const [x, setX] = useState("");
   const [y, setY] = useState("");
-  const [r, setR] = useState("0");
-  const [out, setOut] = useState("[]");
+  const [r, setR] = useState(0);
+  const [points, setPoints] = useState<TPoint[]>([]);
   const [err, setErr] = useState("");
   const location = useLocation();
   const user = location.state.id;
-  const handleXClick = (e: any) => {
-    setX(e.target.value);
-  };
 
-  const handleYClick = (e: any) => {
-    setY(e.target.value);
-  };
-
-  const handleRClick = (e: any) => {
-    setR(e.target.value);
-  };
   const handleClear = async () => {
     const requestOptions = {
       method: "POST",
@@ -242,12 +229,7 @@ export function BodyContainer() {
       }),
     };
     fetch("http://localhost:17017/clear", requestOptions);
-
-    setOut("[]");
-  };
-
-  const handleChange = (message: any) => {
-    setErr(message);
+    setPoints([]);
   };
 
   const handleSubmit = async () => {
@@ -269,14 +251,14 @@ export function BodyContainer() {
       fetch("http://localhost:17017/process", requestOptions)
         .then((response) => response.json())
         .then((response) => {
-          setOut(JSON.stringify(response));
-          handleChange("");
+          setPoints(response);
+          setErr("");
         });
     } else {
-      handleChange(message.verdict);
+      // FIXME
+      setErr(message.verdict.join("\n"));
     }
   };
-  useEffect(() => {}, []);
 
   return (
     <div className="container text-center">
@@ -284,27 +266,30 @@ export function BodyContainer() {
       <div className="row row-cols-2">
         <div className="col">
           <Canvas
-            width={300}
-            height={300}
-            r={r}
-            sr={setR}
-            points={out}
-            so={setOut}
-            user={user}
+            canvasDimensions={{
+              width: 300,
+              height: 300
+            }}
+            scale={r}
+            points={points}
+            onPointAdd={(point) => {
+              sendPointData(point.x, point.y, point.scale, user)
+              handleSubmit()
+            }}
           />
         </div>
         <div className="col">
           <InputContainer
-            sx={handleXClick}
-            sy={handleYClick}
-            sr={handleRClick}
+            sx={setX}
+            sy={setY}
+            sr={setR}
           />
         </div>
         <div className="col">
           <ButtonContainer act={handleSubmit} clear={handleClear} />
         </div>
         <div className="col">
-          <ResultTableContainer data={out} />
+          <ResultTableContainer data={points} />
         </div>
       </div>
       <ErrorContainer errors={err} />
