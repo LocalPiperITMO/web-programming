@@ -24,9 +24,9 @@ function XInput({ sx, data }: any) {
             <div className="form-check">
               <input
                 className="form-check-input"
-                type="checkbox"
+                type="radio"
                 value={item}
-                id={"xCheck" + item}
+                name={"xCheck"}
                 onClick={sx}
               />
               <label className="form-check-label" htmlFor={"xCheck" + item}>
@@ -45,19 +45,17 @@ function RInput({ sr, data }: any) {
     <>
       <div className="container text-center value-checkbox-container">
         {data.map((item: string, index: number) => (
-          <div key={index} className="col">
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                value={item}
-                id={"rCheck" + item}
-                onClick={sr}
-              />
-              <label className="form-check-label" htmlFor={"rCheck" + item}>
-                {item}
-              </label>
-            </div>
+          <div key={index} className="form-check">
+            <input
+              className="form-check-input"
+              type="radio"
+              name={"rCheck"}
+              value={item}
+              onClick={sr}
+            />
+            <label className="form-check-label" htmlFor={"rCheck" + item}>
+              {item}
+            </label>
           </div>
         ))}
       </div>

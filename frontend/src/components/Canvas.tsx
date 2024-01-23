@@ -116,7 +116,6 @@ export function Canvas({ width, height, r, out, user, so }: any) {
     if (out) {
       drawPoints(context);
     } else {
-      clearCanvas(context);
       drawGraph(context);
     }
   }, [drawGraph, drawPoints]);
