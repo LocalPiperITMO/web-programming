@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <copy file="./target/Lab3.war" toFile="../wildfly-preview-26.1.3.Final/standalone/deployments/Lab3.war"/>
+</target>
+</project>

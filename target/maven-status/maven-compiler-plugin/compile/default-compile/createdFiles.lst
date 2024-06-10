@@ -1,0 +1,10 @@
+db\ResultDAO.class
+beans\CheckerBean.class
+beans\YBean.class
+beans\ShotControllerBean.class
+db\JPAUtils.class
+entity\Result.class
+beans\RBean.class
+entity\Result$ResultBuilder.class
+db\DAOFactory.class
+beans\XBean.class

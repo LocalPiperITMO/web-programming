@@ -1,0 +1,14 @@
+.clock-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.clock-time {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.clock-date {
+    font-size: 18px;
+    color: #666;
+}
