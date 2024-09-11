@@ -1,0 +1,11 @@
+.value-checkbox-container {
+    border: 2px solid #ccc;
+    height: 100px;
+    overflow-y: scroll;
+  }
+
+.result-table-container {
+    border: 2px solid #ccc;
+    height: 200px;
+    overflow-y: scroll;
+}
