@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+        >
+
+<h:head>
+    <title>IT'S ABOUT TO GET WORSE</title>
+    <h:outputStylesheet library="css" name="clock.css"/>
+</h:head>
+<h:body>
+    <div class="container text-center">
+        <div class="row align-content-center">
+
+        </div>
+        <div class="row align-content-center">
+            <p>WebLab3</p>
+            <p>Sorokin Artem Nikolaevich P3206</p>
+            <p>n1825</p>
+        </div>
+
+        <h:form id="indexPageForm">
+            <h:commandButton id="indexPageLink" action="index" value="Start"/>
+        </h:form>
+        <h:form id="clockForm">
+            <div id="clock" class="clock-container">
+                <div id="time" class="clock-time"/>
+                <div id="date" class="clock-date"/>
+            </div>
+        </h:form>
+        <h:outputScript library="js" name="clockHandler.js"/>
+    </div>
+
+</h:body>
+
+</html>

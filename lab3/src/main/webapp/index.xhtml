@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <title>IT'S GETTING WORSE</title>
+    <h:outputStylesheet library="css" name="style.css"/>
+</h:head>
+
+<h:body>
+    <h:form id="hidden-form">
+        <h:inputHidden value="#{xBean.x}" id="hidden-x">
+            <f:converter converterId="jakarta.faces.Double"/>
+        </h:inputHidden>
+        <h:inputHidden value="#{yBean.y}" id="hidden-y">
+            <f:converter converterId="jakarta.faces.Double"/>
+        </h:inputHidden>
+        <h:inputHidden value="#{rBean.r}" id="hidden-r">
+            <f:converter converterId="jakarta.faces.Double"/>
+        </h:inputHidden>
+        <h:commandButton id="hidden-send" action="#{shotControllerBean.addResult(xBean.x, yBean.y, rBean.r)}"
+                         style="opacity: 0"/>
+    </h:form>
+
+    <div id="canvas-container">
+        <canvas id="canvas" width="300" height="300"/>
+    </div>
+
+    <h:form id="input-form">
+        <h:outputLabel for="x" value="Coordinate X {-3,-2,-1,0,1,2,3,4,5}"/>
+        <h:selectOneMenu id="x" styleClass="coords-input" value="#{xBean.x}"
+                         required="true" requiredMessage="Value X is required"
+                         validatorMessage="The value must be from -3 to 5"
+                         validator="#{xBean.validateXBeanValue}">
+            <f:selectItems value="#{xBean.availableXValues}"/>
+            <f:ajax execute="@this" render="@form"/>
+        </h:selectOneMenu>
+        <h:message for="x"/>
+
+        <h:outputLabel for="y" value="Coordinate Y (-5; 5)"/>
+        <h:inputText id="y" styleClass="coords-input" value="#{yBean.y}"
+                     required="true" maxlength="7"
+                     requiredMessage="Value Y is required"
+                     validatorMessage="The value must be from -5 to 5"
+                     validator="#{yBean.validateYBeanValue}">
+            <f:converter converterId="jakarta.faces.Double"/>
+            <f:validateDoubleRange minimum="-5" maximum="5"/>
+            <f:ajax event="blur" render="@this y"/>
+        </h:inputText>
+        <h:message for="y"/>
+
+        <h:outputLabel for="r" value="Coordinate R {1,2,3,4,5}"/>
+        <h:selectOneRadio id="r" styleClass="coords-input" selectedItem="#{rBean.r}" value="#{rBean.r}"
+                          required="true" requiredMessage="Value R is required"
+                          validatorMessage="The value must be from 1 to 5"
+                          validator="#{rBean.validateRBeanValue}">
+            <f:selectItem itemValue="1" itemLabel="1"/>
+            <f:selectItem itemValue="2" itemLabel="2"/>
+            <f:selectItem itemValue="3" itemLabel="3"/>
+            <f:selectItem itemValue="4" itemLabel="4"/>
+            <f:selectItem itemValue="5" itemLabel="5"/>
+            <f:ajax event="click" render="canvas"/>
+        </h:selectOneRadio>
+        <h:message for="r"/>
+        <h:outputScript library="js" name="utils.js"/>
+        <h:outputScript library="js" name="points.js"/>
+        <h:outputScript>
+            function drawPoint(x, y, r, hit, controlR) {
+            if (controlR === r) {
+            let canvas = document.getElementById("canvas"),
+            ctx = canvas.getContext('2d');
+
+            // Нормализация координат
+            let normalizedX = (x * 0.3 * canvas.width / 3) + canvas.width / 2;
+            let normalizedY = (-y * 0.3 * canvas.height / 3) + canvas.height / 2;
+
+            ctx.beginPath();
+
+            if (hit) {
+            // Если точка попала, рисуем зеленую точку
+            ctx.fillStyle = "green";
+            ctx.strokeStyle = "green";
+            } else {
+            // Если точка не попала, рисуем красную точку
+            ctx.fillStyle = "red";
+            ctx.strokeStyle = "red";
+            }
+
+            // Рисуем круг в месте точки
+            ctx.arc(normalizedX, normalizedY, 5, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.stroke();
+            }
+            }
+            function drawGraph(r) {
+                let canvas = document.getElementById("canvas"),
+                        ctx = canvas.getContext('2d');
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.beginPath();
+
+                ctx.globalAlpha = 0.5;
+                // setting blue color
+                ctx.strokeStyle = "#3399ff";
+                ctx.fillStyle = "#3399ff";
+
+                ctx.moveTo(canvas.width / 2, canvas.height / 2);
+                ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2 / 5 * r, -Math.PI / 2, Math.PI, true);
+                ctx.fill();
+                // Filling area in the second quadrant (triangle)
+                ctx.moveTo(canvas.width / 2, canvas.height / 2);
+                ctx.lineTo(canvas.width / 2, canvas.height / 2 + canvas.height / 2 / 5 * r);
+                ctx.lineTo(canvas.width / 2 - canvas.width / 2 / 5 * r, canvas.height / 2);
+                ctx.lineTo(canvas.width / 2, canvas.height / 2);
+                ctx.fill();
+
+                // Filling area in the third quadrant (empty)
+
+                // Filling area in the fourth quadrant (quarter circle)
+                ctx.fillRect(canvas.width / 2, canvas.height / 2, canvas.width / 2 / 5 * r, canvas.height / 2 / 5 * r);
+
+                ctx.globalAlpha = 1;
+                // setting black color
+                ctx.beginPath();
+                ctx.strokeStyle = "black";
+                // graph arrows
+                // vertical arrow
+                ctx.moveTo(canvas.width / 2, 0);
+                ctx.lineTo(canvas.width / 2, canvas.height);
+                ctx.moveTo(canvas.width / 1.95, canvas.height * 0.03);
+                ctx.lineTo(canvas.width / 2, 0);
+                ctx.moveTo(canvas.width / 2.05, canvas.height * 0.03);
+                ctx.lineTo(canvas.width / 2, 0);
+                // horizontal arrow
+                ctx.moveTo(0, canvas.height / 2);
+                ctx.lineTo(canvas.width, canvas.height / 2);
+                ctx.moveTo(canvas.width * 0.97, canvas.height / 1.95);
+                ctx.lineTo(canvas.width, canvas.height / 2);
+                ctx.moveTo(canvas.width * 0.97, canvas.height / 2.05);
+                ctx.lineTo(canvas.width, canvas.height / 2);
+
+                // Labels
+                // X label
+                ctx.font = "bold 14px sans-serif";
+                ctx.strokeStyle = "black";
+                ctx.fillStyle = "black";
+                ctx.fillText("X", canvas.width - 10, canvas.height / 2 + 20);
+                // Y label
+                ctx.fillText("Y", canvas.width / 2 + 10, 20);
+
+                ctx.stroke();
+
+            }
+
+            document.getElementById("input-form:r").addEventListener("change", function () {
+                drawGraph(getRadius());
+                <ui:repeat value="#{shotControllerBean.results}" var="res">
+                    drawPoint(#{res.x}, #{res.y}, #{res.r}, #{res.hit}, #{shotControllerBean.getLastR()});
+                </ui:repeat>
+            }
+            );
+            drawGraph(getRadius());
+            <ui:repeat value="#{shotControllerBean.results}" var="res">
+                drawPoint(#{res.x}, #{res.y}, #{res.r}, #{res.hit}, #{shotControllerBean.getLastR()});
+            </ui:repeat>
+        </h:outputScript>
+
+        <h:commandButton value="Send" styleClass="submit-btn">
+            <f:ajax execute="@form" listener="#{shotControllerBean.addResult(xBean.x, yBean.y, rBean.r)}"
+                    render="@form results-table y"/>
+        </h:commandButton>
+
+        <h:commandButton value="Clear Table" styleClass="clear-btn" action="#{shotControllerBean.clearTable()}">
+            <f:ajax render="@form results-table y"/>
+        </h:commandButton>
+
+        <h:commandButton id="homePageLink" action="home" value="Go To Main Page"/>
+    </h:form>
+
+    <h:dataTable id="results-table" var="result" value="#{shotControllerBean.results}" styleClass="results-table">
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="X"/>
+            </f:facet>
+            <h:outputText value="#{result.x}"/>
+        </h:column>
+
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="Y"/>
+            </f:facet>
+            <h:outputText value="#{result.y}"/>
+        </h:column>
+
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="R"/>
+            </f:facet>
+            <h:outputText value="#{result.r}"/>
+        </h:column>
+
+        <h:column>
+            <f:facet name="header">
+                <h:outputText value="Hit"/>
+            </f:facet>
+            <h:outputText value="#{result.hit}" styleClass="#{result.hit ? 'hit' : 'miss'}"/>
+        </h:column>
+    </h:dataTable>
+</h:body>
+<h:outputScript library="js" name="canvas.js"/>
+
+</html>

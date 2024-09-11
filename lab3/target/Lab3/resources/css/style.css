@@ -1,0 +1,45 @@
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.results-table th, .results-table td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.results-table th {
+    background-color: #f2f2f2;
+}
+
+.results-table .hit {
+    color: green;
+    font-weight: bold;
+}
+
+.results-table .miss {
+    color: red;
+    font-weight: bold;
+}
+
+#input-form {
+    margin-top: 20px;
+}
+
+.coords-input {
+    margin-bottom: 10px;
+}
+
+.submit-btn, .clear-btn {
+    margin-top: 10px;
+}
+
+#results-table {
+    margin-top: 20px;
+}
+
+#homePageLink {
+    margin-top: 10px;
+}
